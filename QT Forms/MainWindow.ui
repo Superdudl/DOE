@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1350</width>
-    <height>770</height>
+    <width>1412</width>
+    <height>764</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -29,34 +29,113 @@
    <layout class="QHBoxLayout" name="horizontalLayout" stretch="4,0,2">
     <item>
      <widget class="QWidget" name="videoCaptureWidget" native="true">
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="0" column="1">
-        <widget class="QLabel" name="videoCaptureLabel">
+      <property name="sizePolicy">
+       <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+        <horstretch>0</horstretch>
+        <verstretch>0</verstretch>
+       </sizepolicy>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3" stretch="2,1">
+       <property name="sizeConstraint">
+        <enum>QLayout::SizeConstraint::SetMinimumSize</enum>
+       </property>
+       <item>
+        <widget class="QSplitter" name="splitter">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <property name="sizeIncrement">
+          <size>
+           <width>0</width>
+           <height>0</height>
+          </size>
+         </property>
          <property name="frameShape">
-          <enum>QFrame::Shape::Box</enum>
+          <enum>QFrame::Shape::NoFrame</enum>
          </property>
-         <property name="text">
-          <string/>
+         <property name="midLineWidth">
+          <number>0</number>
          </property>
+         <property name="orientation">
+          <enum>Qt::Orientation::Horizontal</enum>
+         </property>
+         <widget class="QLabel" name="videoCaptureLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>78</width>
+            <height>68</height>
+           </size>
+          </property>
+          <property name="baseSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+          <property name="scaledContents">
+           <bool>false</bool>
+          </property>
+         </widget>
+         <widget class="QLabel" name="inferenceLabel">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>78</width>
+            <height>68</height>
+           </size>
+          </property>
+          <property name="sizeIncrement">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::Shape::Box</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Shadow::Sunken</enum>
+          </property>
+          <property name="text">
+           <string/>
+          </property>
+         </widget>
         </widget>
        </item>
-       <item row="1" column="1">
+       <item>
         <spacer name="verticalSpacer">
          <property name="orientation">
           <enum>Qt::Orientation::Vertical</enum>
          </property>
          <property name="sizeType">
-          <enum>QSizePolicy::Policy::Fixed</enum>
+          <enum>QSizePolicy::Policy::Preferred</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>0</width>
+           <width>10</width>
            <height>50</height>
           </size>
          </property>
@@ -103,8 +182,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>421</width>
-            <height>347</height>
+            <width>442</width>
+            <height>344</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -123,28 +202,7 @@
            <item>
             <layout class="QGridLayout" name="settingsGridLayout">
              <item row="0" column="1">
-              <widget class="QComboBox" name="modelComboBox">
-               <item>
-                <property name="text">
-                 <string>New Item</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>New Item</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>New Item</string>
-                </property>
-               </item>
-               <item>
-                <property name="text">
-                 <string>New Item</string>
-                </property>
-               </item>
-              </widget>
+              <widget class="QComboBox" name="modelComboBox"/>
              </item>
              <item row="1" column="1">
               <widget class="QLineEdit" name="exposureEdit"/>
@@ -227,7 +285,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1350</width>
+     <width>1412</width>
      <height>22</height>
     </rect>
    </property>
