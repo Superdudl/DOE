@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1412</width>
-    <height>764</height>
+    <width>1029</width>
+    <height>556</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -42,7 +42,7 @@
        <item>
         <widget class="QSplitter" name="splitter">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Ignored" vsizetype="Ignored">
+          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -163,7 +163,7 @@
        <item>
         <widget class="QScrollArea" name="settingsScrollArea">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+          <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -182,8 +182,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>442</width>
-            <height>344</height>
+            <width>314</width>
+            <height>240</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -200,23 +200,34 @@
             <number>9</number>
            </property>
            <item>
-            <layout class="QGridLayout" name="settingsGridLayout">
-             <item row="0" column="1">
-              <widget class="QComboBox" name="modelComboBox"/>
+            <layout class="QGridLayout" name="settingsGridLayout" columnstretch="1,4,1">
+             <property name="sizeConstraint">
+              <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
+             </property>
+             <item row="3" column="0">
+              <widget class="QLabel" name="saveLabel">
+               <property name="text">
+                <string>Сохранить в</string>
+               </property>
+              </widget>
              </item>
              <item row="1" column="1">
               <widget class="QLineEdit" name="exposureEdit"/>
-             </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="formatEdit"/>
-             </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="saveEdit"/>
              </item>
              <item row="0" column="0">
               <widget class="QLabel" name="modelLabel">
                <property name="text">
                 <string>Модель</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="saveEdit"/>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="formatLabel">
+               <property name="text">
+                <string>Формат</string>
                </property>
               </widget>
              </item>
@@ -227,17 +238,16 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="formatLabel">
-               <property name="text">
-                <string>Формат</string>
-               </property>
-              </widget>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="formatEdit"/>
              </item>
-             <item row="3" column="0">
-              <widget class="QLabel" name="saveLabel">
+             <item row="0" column="1">
+              <widget class="QComboBox" name="modelComboBox"/>
+             </item>
+             <item row="1" column="2">
+              <widget class="QCheckBox" name="checkBox">
                <property name="text">
-                <string>Сохранить в</string>
+                <string>Авто</string>
                </property>
               </widget>
              </item>
@@ -285,12 +295,33 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1412</width>
+     <width>1029</width>
      <height>22</height>
     </rect>
    </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Система</string>
+    </property>
+    <addaction name="action"/>
+    <addaction name="action_2"/>
+   </widget>
+   <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
+  <action name="action">
+   <property name="text">
+    <string>Подключить камеру</string>
+   </property>
+   <property name="shortcut">
+    <string>F3</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Загрузить видео</string>
+   </property>
+  </action>
  </widget>
  <resources/>
  <connections/>
