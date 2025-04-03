@@ -1,2 +1,3 @@
 .idea
-/src/models/*
+/src/pretrained_models/*
+!/src/pretrained_models/.gitkeep

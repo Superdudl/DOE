@@ -9,8 +9,8 @@ def main():
     app = QApplication(sys.argv)
 
     window = MainWindow()
-    _ = MainController(window.ui)
     window.showMaximized()
+    _ = MainController(window.ui)
 
     sys.exit(app.exec())
 
