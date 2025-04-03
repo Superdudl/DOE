@@ -32,10 +32,12 @@ class Ui_mainWindow(object):
         sizePolicy.setVerticalStretch(1)
         sizePolicy.setHeightForWidth(mainWindow.sizePolicy().hasHeightForWidth())
         mainWindow.setSizePolicy(sizePolicy)
-        self.action = QAction(mainWindow)
-        self.action.setObjectName(u"action")
-        self.action_2 = QAction(mainWindow)
-        self.action_2.setObjectName(u"action_2")
+        self.connect_camera = QAction(mainWindow)
+        self.connect_camera.setObjectName(u"connect_camera")
+        self.connect_camera.setCheckable(False)
+        self.load_video = QAction(mainWindow)
+        self.load_video.setObjectName(u"load_video")
+        self.load_video.setCheckable(False)
         self.centralwidget = QWidget(mainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
@@ -119,7 +121,7 @@ class Ui_mainWindow(object):
         self.settingsScrollArea.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.settingsScrollAreaContents = QWidget()
         self.settingsScrollAreaContents.setObjectName(u"settingsScrollAreaContents")
-        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 314, 240))
+        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 357, 240))
         self.verticalLayout_2 = QVBoxLayout(self.settingsScrollAreaContents)
         self.verticalLayout_2.setSpacing(10)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -191,6 +193,11 @@ class Ui_mainWindow(object):
 
         self.buttonsLayout.addWidget(self.startButton)
 
+        self.pushButton = QPushButton(self.settingsWidget)
+        self.pushButton.setObjectName(u"pushButton")
+
+        self.buttonsLayout.addWidget(self.pushButton)
+
         self.recordButton = QPushButton(self.settingsWidget)
         self.recordButton.setObjectName(u"recordButton")
 
@@ -221,8 +228,8 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusBar)
 
         self.menuBar.addAction(self.menu.menuAction())
-        self.menu.addAction(self.action)
-        self.menu.addAction(self.action_2)
+        self.menu.addAction(self.connect_camera)
+        self.menu.addAction(self.load_video)
 
         self.retranslateUi(mainWindow)
 
@@ -231,11 +238,11 @@ class Ui_mainWindow(object):
 
     def retranslateUi(self, mainWindow):
         mainWindow.setWindowTitle(QCoreApplication.translate("mainWindow", u"\u0421\u041f\u041e", None))
-        self.action.setText(QCoreApplication.translate("mainWindow", u"\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u043a\u0430\u043c\u0435\u0440\u0443", None))
+        self.connect_camera.setText(QCoreApplication.translate("mainWindow", u"\u041f\u043e\u0434\u043a\u043b\u044e\u0447\u0438\u0442\u044c \u043a\u0430\u043c\u0435\u0440\u0443", None))
 #if QT_CONFIG(shortcut)
-        self.action.setShortcut(QCoreApplication.translate("mainWindow", u"F3", None))
+        self.connect_camera.setShortcut(QCoreApplication.translate("mainWindow", u"F3", None))
 #endif // QT_CONFIG(shortcut)
-        self.action_2.setText(QCoreApplication.translate("mainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u0432\u0438\u0434\u0435\u043e", None))
+        self.load_video.setText(QCoreApplication.translate("mainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u0432\u0438\u0434\u0435\u043e", None))
         self.videoCaptureLabel.setText("")
         self.inferenceLabel.setText("")
         self.saveLabel.setText(QCoreApplication.translate("mainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0432", None))
@@ -244,6 +251,7 @@ class Ui_mainWindow(object):
         self.exposureLabel.setText(QCoreApplication.translate("mainWindow", u"\u0412\u0440\u0435\u043c\u044f \u043d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u0438\u044f", None))
         self.checkBox.setText(QCoreApplication.translate("mainWindow", u"\u0410\u0432\u0442\u043e", None))
         self.startButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u0430\u0440\u0442", None))
+        self.pushButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u043e\u043f", None))
         self.recordButton.setText(QCoreApplication.translate("mainWindow", u"\u0417\u0430\u043f\u0438\u0441\u044c", None))
         self.stopButton.setText(QCoreApplication.translate("mainWindow", u"\u041e\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
         self.menu.setTitle(QCoreApplication.translate("mainWindow", u"\u0421\u0438\u0441\u0442\u0435\u043c\u0430", None))

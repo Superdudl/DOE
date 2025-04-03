@@ -7,7 +7,7 @@ from PySide6.QtCore import QObject, Slot
 class CameraController(QObject):
     def __init__(self, stream, ui):
         super().__init__()
-        self.camera = stream.cam.camera
+        self.camera = stream.cap.camera
         self.ui = ui
 
     @Slot(float)

@@ -182,7 +182,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>314</width>
+            <width>357</width>
             <height>240</height>
            </rect>
           </property>
@@ -270,6 +270,13 @@
           </widget>
          </item>
          <item>
+          <widget class="QPushButton" name="pushButton">
+           <property name="text">
+            <string>Стоп</string>
+           </property>
+          </widget>
+         </item>
+         <item>
           <widget class="QPushButton" name="recordButton">
            <property name="text">
             <string>Запись</string>
@@ -303,13 +310,16 @@
     <property name="title">
      <string>Система</string>
     </property>
-    <addaction name="action"/>
-    <addaction name="action_2"/>
+    <addaction name="connect_camera"/>
+    <addaction name="load_video"/>
    </widget>
    <addaction name="menu"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <action name="action">
+  <action name="connect_camera">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Подключить камеру</string>
    </property>
@@ -317,7 +327,10 @@
     <string>F3</string>
    </property>
   </action>
-  <action name="action_2">
+  <action name="load_video">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Загрузить видео</string>
    </property>

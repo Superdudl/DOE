@@ -11,13 +11,14 @@ from utils import VideoCapture, Inference
 class CameraStream(QThread):
     frame_grabbed = Signal(np.uint8)
 
-    def __init__(self, ui):
+    def __init__(self):
         super().__init__()
-        self.cam = VideoCapture()
+        self.cap = VideoCapture()
         self.running = True
 
     def run(self):
-        self.cam.start()
+        if self.cap.camera is None: return
+        self.cap.start()
         while True:
             img = self.cam.get_frame()
             if img is None:
@@ -25,19 +26,21 @@ class CameraStream(QThread):
             self.frame_grabbed.emit(img)
 
 
+class VideoFileStream(QThread):
+    pass
+
+
 class VideoStream(QObject):
-    def __init__(self, ui, parent=None):
+    sources = {'camera': CameraStream,
+               'videofile': VideoFileStream}
+    def __init__(self, parent=None):
         super().__init__(parent)
         self.stream = None
-        self.ui = ui
         self.frame = None
-        self.setupUI()
 
-    def setupUI(self):
-        self.start_stream()
-
-    def start_stream(self):
-        self.stream = CameraStream(self.ui)
+    def start_stream(self, source):
+        assert source in self.sources.keys(), f"Выберите из доступных источников {self.sources.keys()}"
+        self.stream = self.sources[source]()
         self.stream.start()
 
         # Slot connection
@@ -48,11 +51,5 @@ class VideoStream(QObject):
             self.stream.running = False
             self.stream.wait()
 
-    def update_frame(self, img):
-        self.frame = img
-        h, w, c = img.shape
-        qimage = QImage(self.frame, w, h, c * w, QImage.Format.Format_RGB888)
-        pixmap = QPixmap.fromImage(qimage)
-        h_label, w_label = self.ui.videoCaptureLabel.height(), self.ui.videoCaptureLabel.width()
-        pixmap = pixmap.scaled(h_label, w_label, Qt.AspectRatioMode.KeepAspectRatio)
-        self.ui.videoCaptureLabel.setPixmap(pixmap)
+if __name__ == "__main__":
+    a = VideoStream
