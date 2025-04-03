@@ -204,15 +204,22 @@
              <property name="sizeConstraint">
               <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
              </property>
-             <item row="3" column="0">
-              <widget class="QLabel" name="saveLabel">
+             <item row="4" column="0">
+              <widget class="QLabel" name="formatLabel">
                <property name="text">
-                <string>Сохранить в</string>
+                <string>Формат</string>
                </property>
               </widget>
              </item>
-             <item row="1" column="1">
-              <widget class="QLineEdit" name="exposureEdit"/>
+             <item row="6" column="1">
+              <widget class="QLineEdit" name="saveEdit"/>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="exposureEdit">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+              </widget>
              </item>
              <item row="0" column="0">
               <widget class="QLabel" name="modelLabel">
@@ -221,31 +228,73 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="saveEdit"/>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="formatLabel">
-               <property name="text">
-                <string>Формат</string>
+             <item row="1" column="0" colspan="3">
+              <widget class="Line" name="line_2">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
                </property>
               </widget>
              </item>
-             <item row="1" column="0">
+             <item row="2" column="2">
+              <widget class="QCheckBox" name="exposureAuto">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Авто</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="modelComboBox"/>
+             </item>
+             <item row="2" column="0">
               <widget class="QLabel" name="exposureLabel">
                <property name="text">
                 <string>Время накопления</string>
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="formatEdit"/>
+             <item row="6" column="0">
+              <widget class="QLabel" name="saveLabel">
+               <property name="text">
+                <string>Сохранить в</string>
+               </property>
+              </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QComboBox" name="modelComboBox"/>
+             <item row="4" column="1">
+              <widget class="QLineEdit" name="formatEdit">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+              </widget>
              </item>
-             <item row="1" column="2">
-              <widget class="QCheckBox" name="checkBox">
+             <item row="5" column="0" colspan="3">
+              <widget class="Line" name="line_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="gainEdit">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="0">
+              <widget class="QLabel" name="gainLabel">
+               <property name="text">
+                <string>Усиление</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QCheckBox" name="gainAuto">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
                <property name="text">
                 <string>Авто</string>
                </property>

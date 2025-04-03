@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.0
+## Created by: Qt User Interface Compiler version 6.8.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -130,50 +130,84 @@ class Ui_mainWindow(object):
         self.settingsGridLayout = QGridLayout()
         self.settingsGridLayout.setObjectName(u"settingsGridLayout")
         self.settingsGridLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
-        self.saveLabel = QLabel(self.settingsScrollAreaContents)
-        self.saveLabel.setObjectName(u"saveLabel")
+        self.formatLabel = QLabel(self.settingsScrollAreaContents)
+        self.formatLabel.setObjectName(u"formatLabel")
 
-        self.settingsGridLayout.addWidget(self.saveLabel, 3, 0, 1, 1)
+        self.settingsGridLayout.addWidget(self.formatLabel, 4, 0, 1, 1)
+
+        self.saveEdit = QLineEdit(self.settingsScrollAreaContents)
+        self.saveEdit.setObjectName(u"saveEdit")
+
+        self.settingsGridLayout.addWidget(self.saveEdit, 6, 1, 1, 1)
 
         self.exposureEdit = QLineEdit(self.settingsScrollAreaContents)
         self.exposureEdit.setObjectName(u"exposureEdit")
+        self.exposureEdit.setEnabled(False)
 
-        self.settingsGridLayout.addWidget(self.exposureEdit, 1, 1, 1, 1)
+        self.settingsGridLayout.addWidget(self.exposureEdit, 2, 1, 1, 1)
 
         self.modelLabel = QLabel(self.settingsScrollAreaContents)
         self.modelLabel.setObjectName(u"modelLabel")
 
         self.settingsGridLayout.addWidget(self.modelLabel, 0, 0, 1, 1)
 
-        self.saveEdit = QLineEdit(self.settingsScrollAreaContents)
-        self.saveEdit.setObjectName(u"saveEdit")
+        self.line_2 = QFrame(self.settingsScrollAreaContents)
+        self.line_2.setObjectName(u"line_2")
+        self.line_2.setFrameShape(QFrame.Shape.HLine)
+        self.line_2.setFrameShadow(QFrame.Shadow.Sunken)
 
-        self.settingsGridLayout.addWidget(self.saveEdit, 3, 1, 1, 1)
+        self.settingsGridLayout.addWidget(self.line_2, 1, 0, 1, 3)
 
-        self.formatLabel = QLabel(self.settingsScrollAreaContents)
-        self.formatLabel.setObjectName(u"formatLabel")
+        self.exposureAuto = QCheckBox(self.settingsScrollAreaContents)
+        self.exposureAuto.setObjectName(u"exposureAuto")
+        self.exposureAuto.setEnabled(False)
 
-        self.settingsGridLayout.addWidget(self.formatLabel, 2, 0, 1, 1)
-
-        self.exposureLabel = QLabel(self.settingsScrollAreaContents)
-        self.exposureLabel.setObjectName(u"exposureLabel")
-
-        self.settingsGridLayout.addWidget(self.exposureLabel, 1, 0, 1, 1)
-
-        self.formatEdit = QLineEdit(self.settingsScrollAreaContents)
-        self.formatEdit.setObjectName(u"formatEdit")
-
-        self.settingsGridLayout.addWidget(self.formatEdit, 2, 1, 1, 1)
+        self.settingsGridLayout.addWidget(self.exposureAuto, 2, 2, 1, 1)
 
         self.modelComboBox = QComboBox(self.settingsScrollAreaContents)
         self.modelComboBox.setObjectName(u"modelComboBox")
 
         self.settingsGridLayout.addWidget(self.modelComboBox, 0, 1, 1, 1)
 
-        self.checkBox = QCheckBox(self.settingsScrollAreaContents)
-        self.checkBox.setObjectName(u"checkBox")
+        self.exposureLabel = QLabel(self.settingsScrollAreaContents)
+        self.exposureLabel.setObjectName(u"exposureLabel")
 
-        self.settingsGridLayout.addWidget(self.checkBox, 1, 2, 1, 1)
+        self.settingsGridLayout.addWidget(self.exposureLabel, 2, 0, 1, 1)
+
+        self.saveLabel = QLabel(self.settingsScrollAreaContents)
+        self.saveLabel.setObjectName(u"saveLabel")
+
+        self.settingsGridLayout.addWidget(self.saveLabel, 6, 0, 1, 1)
+
+        self.formatEdit = QLineEdit(self.settingsScrollAreaContents)
+        self.formatEdit.setObjectName(u"formatEdit")
+        self.formatEdit.setEnabled(False)
+
+        self.settingsGridLayout.addWidget(self.formatEdit, 4, 1, 1, 1)
+
+        self.line_3 = QFrame(self.settingsScrollAreaContents)
+        self.line_3.setObjectName(u"line_3")
+        self.line_3.setFrameShape(QFrame.Shape.HLine)
+        self.line_3.setFrameShadow(QFrame.Shadow.Sunken)
+
+        self.settingsGridLayout.addWidget(self.line_3, 5, 0, 1, 3)
+
+        self.gainEdit = QLineEdit(self.settingsScrollAreaContents)
+        self.gainEdit.setObjectName(u"gainEdit")
+        self.gainEdit.setEnabled(False)
+
+        self.settingsGridLayout.addWidget(self.gainEdit, 3, 1, 1, 1)
+
+        self.gainLabel = QLabel(self.settingsScrollAreaContents)
+        self.gainLabel.setObjectName(u"gainLabel")
+
+        self.settingsGridLayout.addWidget(self.gainLabel, 3, 0, 1, 1)
+
+        self.gainAuto = QCheckBox(self.settingsScrollAreaContents)
+        self.gainAuto.setObjectName(u"gainAuto")
+        self.gainAuto.setEnabled(False)
+
+        self.settingsGridLayout.addWidget(self.gainAuto, 3, 2, 1, 1)
 
         self.settingsGridLayout.setColumnStretch(0, 1)
         self.settingsGridLayout.setColumnStretch(1, 4)
@@ -245,11 +279,13 @@ class Ui_mainWindow(object):
         self.load_video.setText(QCoreApplication.translate("mainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u0432\u0438\u0434\u0435\u043e", None))
         self.videoCaptureLabel.setText("")
         self.inferenceLabel.setText("")
-        self.saveLabel.setText(QCoreApplication.translate("mainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0432", None))
-        self.modelLabel.setText(QCoreApplication.translate("mainWindow", u"\u041c\u043e\u0434\u0435\u043b\u044c", None))
         self.formatLabel.setText(QCoreApplication.translate("mainWindow", u"\u0424\u043e\u0440\u043c\u0430\u0442", None))
+        self.modelLabel.setText(QCoreApplication.translate("mainWindow", u"\u041c\u043e\u0434\u0435\u043b\u044c", None))
+        self.exposureAuto.setText(QCoreApplication.translate("mainWindow", u"\u0410\u0432\u0442\u043e", None))
         self.exposureLabel.setText(QCoreApplication.translate("mainWindow", u"\u0412\u0440\u0435\u043c\u044f \u043d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u0438\u044f", None))
-        self.checkBox.setText(QCoreApplication.translate("mainWindow", u"\u0410\u0432\u0442\u043e", None))
+        self.saveLabel.setText(QCoreApplication.translate("mainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0432", None))
+        self.gainLabel.setText(QCoreApplication.translate("mainWindow", u"\u0423\u0441\u0438\u043b\u0435\u043d\u0438\u0435", None))
+        self.gainAuto.setText(QCoreApplication.translate("mainWindow", u"\u0410\u0432\u0442\u043e", None))
         self.startButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u0430\u0440\u0442", None))
         self.pushButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u043e\u043f", None))
         self.recordButton.setText(QCoreApplication.translate("mainWindow", u"\u0417\u0430\u043f\u0438\u0441\u044c", None))

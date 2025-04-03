@@ -10,7 +10,7 @@ def main():
 
     window = MainWindow()
     window.showMaximized()
-    _ = MainController(window.ui)
+    _ = MainController(window)
 
     sys.exit(app.exec())
 

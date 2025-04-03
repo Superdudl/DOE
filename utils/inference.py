@@ -2,12 +2,15 @@ import sys
 
 sys.path.append(__file__)
 import tensorrt as trt
+from PySide6.QtCore import QObject
 import numpy as np
 import pycuda.driver as cuda
 import pycuda.autoinit
 
 
-class Inference:
+class Inference(QObject):
+    def __init__(self, /):
+        super().__init__()
 
     def create(self, model):
         self.model = model
