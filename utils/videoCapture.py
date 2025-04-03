@@ -22,12 +22,12 @@ class VideoCapture:
         self.frame = None
 
     def start(self):
-        assert self.camera is not None, "Подключите камеру!"
-        self.camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
+        if self.camera is not None:
+            self.camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
     def stop(self):
-        assert self.camera is not None, "Подключите камеру!"
-        self.camera.StopGrabbing()
+        if self.camera is not None:
+            self.camera.StopGrabbing()
 
     def get_frame(self):
         grabResult = self.camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
