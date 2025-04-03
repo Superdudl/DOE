@@ -16,4 +16,4 @@ class MainWindow(QMainWindow):
         path = Path(PurePath(__file__).parents[2], 'src', 'pretrained_models')
         for i, filename in enumerate(path.glob('*trt')):
             self.ui.modelComboBox.addItem("")
-            self.ui.modelComboBox.setItemText(i, str(filename))
+            self.ui.modelComboBox.setItemText(i, str(filename.name))
