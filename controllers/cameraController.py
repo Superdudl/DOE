@@ -12,34 +12,53 @@ class CameraController(QObject):
         super().__init__()
         self.camera = stream.cap.camera
         self.ui = ui
+        self.setupUI()
         self.connect_slots()
 
         # Validators
-        self.ui.gainEdit.setValidator(QIntValidator(self.camera.GainRaw.Value.Min, self.camera.GainRaw.Value.Max))
+        self.ui.gainEdit.setValidator(QIntValidator(self.camera.GainRaw.Min, self.camera.GainRaw.Max))
         self.ui.exposureEdit.setValidator(
             QIntValidator(self.camera.ExposureTimeAbs.Min, self.camera.ExposureTimeAbs.Max))
 
+    def setupUI(self):
+        # Exposure UI
+        if self.camera.ExposureAuto.Value == "Continuous":
+            self.ui.exposureAuto.setChecked(True)
+            self.ui.exposureEdit.setEnabled(False)
+            self.ui.exposureEdit.setText(str(int(self.camera.ExposureTimeAbs.Value)))
+        else:
+            self.ui.exposureEdit.setText(str(int(self.camera.ExposureTimeAbs.Value)))
+        # Gain UI
+        if self.camera.GainAuto.Value == "Continuous":
+            self.ui.gainAuto.setChecked(True)
+            self.ui.gainEdit.setEnabled(False)
+            self.ui.gainEdit.setText(str(int(self.camera.GainRaw.Value)))
+        else:
+            self.ui.gainEdit.setText(str(int(self.camera.GainRaw.Value)))
+
+
     def connect_slots(self):
-        self.ui.exposureEdit.editingFinished.connect(self.setExposure)
         self.ui.gainEdit.editingFinished.connect(self.setGain)
+        self.ui.exposureEdit.editingFinished.connect(self.setExposure)
         self.ui.exposureAuto.clicked.connect(self.setExposureAuto)
         self.ui.gainAuto.clicked.connect(self.setGainAuto)
 
-    @Slot(float)
+    @Slot()
     def setGain(self):
-        value = float(self.ui.exposureEdit.text())
-        self.camera.GainRaw.Value = value
+        value = float(self.ui.gainEdit.text())
+        self.camera.GainRaw.Value = int(value)
 
     @Slot()
     def setGainAuto(self):
         if self.ui.gainAuto.isChecked():
-            self.ui.exposureEdit.setEnable(False)
+            self.ui.gainEdit.setEnabled(False)
             self.camera.GainAuto.Value = "Continuous"
         else:
-            self.camera.GainAuto.Value = "off"
-            self.ui.exposureEdit.setEnable(True)
+            self.camera.GainAuto.Value = "Off"
+            self.ui.gainEdit.setEnabled(True)
+            self.ui.gainEdit.setText(str(int(self.camera.GainRaw.Value)))
 
-    @Slot(float)
+    @Slot()
     def setExposure(self):
         value = float(self.ui.exposureEdit.text())
         self.camera.ExposureTimeAbs.Value = value
@@ -47,8 +66,10 @@ class CameraController(QObject):
     @Slot()
     def setExposureAuto(self):
         if self.ui.exposureAuto.isChecked():
-            self.ui.gainEdit.setEnable(False)
+            self.ui.exposureEdit.setEnabled(False)
             self.camera.ExposureAuto.Value = "Continuous"
         else:
-            self.camera.ExposureAuto.Value = "off"
-            self.ui.gainEdit.setEnable(True)
+            self.camera.ExposureAuto.Value = "Off"
+            self.ui.exposureEdit.setEnabled(True)
+            self.ui.exposureEdit.setText(str(int(self.camera.ExposureTimeAbs.Value)))
+

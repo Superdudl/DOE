@@ -3,8 +3,9 @@ from pathlib import PurePath, Path
 
 sys.path.append(__file__)
 from utils import Inference
-from PySide6.QtCore import QThread, Signal
+from PySide6.QtCore import QThread, Signal, QObject
 from PySide6.QtGui import QImage, QPixmap, Qt
+import numpy as np
 
 
 class Predict(QThread):
@@ -47,9 +48,10 @@ class InferenceController(Inference):
         self.net = self.create(self.model)
 
     def start(self):
-        if not self.inference.running:
-            self.inference.start()
-            self.inference.inference_complete.connect(self.update_frame)
+        if hasattr(self, 'inference'):
+            if not self.inference.running:
+                self.inference.start()
+                self.inference.inference_complete.connect(self.update_frame)
 
     def stop(self):
         if self.inference.running:
@@ -58,9 +60,9 @@ class InferenceController(Inference):
             self.inference.inference_complete.disconnect()
 
     def update_frame(self, img):
-        self.video_stream.inference_frame = img
+        self.video_stream.inference_frame = np.copy(img)
         h, w, c = img
-        qimage = QImage(img, h, w, w * c, QImage.Format.Format_RGB888)
+        qimage = QImage(img, w, h, w * c, QImage.Format.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)
         pixmap = pixmap.scaled(self.ui.videoCaptureLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.self.ui.videoCaptureLabel.setPixmap(pixmap)

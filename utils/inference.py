@@ -32,6 +32,7 @@ class Inference(QObject):
 
         for i in range(self.engine.num_io_tensors):
             self.context.set_tensor_address(self.engine.get_tensor_name(i), self.bindings[i])
+        return self
 
     def __call_(self, input: np.uint8):
         input = np.float32(input / 255).transpose(2, 0, 1)

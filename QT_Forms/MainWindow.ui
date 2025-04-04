@@ -81,6 +81,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="layoutDirection">
+           <enum>Qt::LayoutDirection::LeftToRight</enum>
+          </property>
           <property name="frameShape">
            <enum>QFrame::Shape::Box</enum>
           </property>
@@ -92,6 +95,9 @@
           </property>
           <property name="scaledContents">
            <bool>false</bool>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
          <widget class="QLabel" name="inferenceLabel">
@@ -121,6 +127,9 @@
           </property>
           <property name="text">
            <string/>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </widget>
@@ -182,8 +191,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>357</width>
-            <height>240</height>
+            <width>358</width>
+            <height>235</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -352,7 +361,7 @@
      <x>0</x>
      <y>0</y>
      <width>1029</width>
-     <height>22</height>
+     <height>33</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

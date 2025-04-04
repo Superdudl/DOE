@@ -33,12 +33,12 @@ class MainController(QObject):
         if not self.video_stream.status:
             QMessageBox.warning(self.window, "Ошибка", "Камера не подключена")
             return
+        self.ui.exposureEdit.setEnabled(True)
+        self.ui.gainEdit.setEnabled(True)
+        self.ui.formatEdit.setEnabled(True)
+        self.ui.exposureAuto.setEnabled(True)
+        self.ui.gainAuto.setEnabled(True)
         self.camera_controller = CameraController(self.video_stream.stream, self.ui)
-        self.ui.exposureEdit.setEnable(True)
-        self.ui.gainEdit.setEnable(True)
-        self.ui.formatEdit.setEnable(True)
-        self.ui.exposureAuto.setEnable(True)
-        self.ui.gainAuto.setEnable(True)
 
     def open_video(self):
         self.inference_controller.stop()

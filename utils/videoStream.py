@@ -47,22 +47,24 @@ class VideoStream(QObject):
         assert source in self.sources.keys(), f"Выберите из доступных источников {self.sources.keys()}"
         self.stream = self.sources[source]()
         self.stream.start() # Move to Thread
+        self.stream.wait(500)
         self.status = self.stream.running
         # Slot connection
-        self.stream.frame_grabbed.connect(lambda img: self.frame)
-        self.stream.frame_grabbed.connect(self.update_frame)
+        if self.status:
+            self.stream.frame_grabbed.connect(self.update_frame)
 
     def stop_stream(self):
         if self.stream is not None:
             self.stream.running = False
             self.stream.wait()
 
-    def update_frame(self):
+    def update_frame(self, img):
+        self.frame = np.copy(img)
         h, w, c = self.frame.shape
-        qimage = QImage(self.frame, h, w, w * c, QImage.Format.Format_RGB888)
+        qimage = QImage(self.frame, w, h, w * c, QImage.Format.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)
         pixmap = pixmap.scaled(self.ui.videoCaptureLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
-        self.ui.self.ui.videoCaptureLabel.setPixmap(pixmap)
+        self.ui.videoCaptureLabel.setPixmap(pixmap)
 
 if __name__ == "__main__":
     a = VideoStream
