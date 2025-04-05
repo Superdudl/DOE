@@ -17,3 +17,6 @@ class MainWindow(QMainWindow):
         for i, filename in enumerate(path.glob('*trt')):
             self.ui.modelComboBox.addItem("")
             self.ui.modelComboBox.setItemText(i, str(filename.name))
+
+    def closeEvent(self, event, /):
+        pass

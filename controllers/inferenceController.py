@@ -9,46 +9,50 @@ import numpy as np
 
 
 class Predict(QThread):
-    inference_complete = Signal()
+    inference_complete = Signal(np.float32)
 
-    def __init__(self, inference, stream):
+    def __init__(self, controller, stream):
         super().__init__()
-        self.inference = inference
         self.stream = stream
+        self.controller = controller
         self.running = False
 
     def run(self):
-        if self.inference.model is not None and self.stream.status:
-            self.running = True
-            while self.running:
-                result = self.inference.net(self.stream.frame)
-                self.inference_complete.emit(result)
+        # if self.inference.model is not None and self.stream.status:
+        self.inference = Inference()
+        self.inference.create(self.controller.model)
+        self.running = True
+        while not self.isInterruptionRequested() :
+            result = self.inference(self.stream.frame)
+            self.inference_complete.emit(result)
+        self.inference.clear()
 
 
-class InferenceController(Inference):
+class InferenceController(QObject):
     models_dir = Path(PurePath(__file__).parents[1], 'src', 'pretrained_models')
+
     def __init__(self, ui, video_stream):
         super().__init__()
         self.video_stream = video_stream
         self.ui = ui
+        self.connect_slots()
         if len(self.ui.modelComboBox.currentText()) > 0:
             self.model = self.models_dir / self.ui.modelComboBox.currentText()
-            self.net = self.create(self.model)
             self.inference = Predict(self, self.video_stream)
         else:
             self.model = None
 
-        # Slot connection
+    def connect_slots(self):
         self.ui.modelComboBox.activated.connect(self.update_model)
         self.ui.startButton.clicked.connect(self.start)
         self.ui.stopButton.clicked.connect(self.stop)
 
     def update_model(self):
         self.model = self.model = self.models_dir / self.ui.modelComboBox.currentText()
-        self.net = self.create(self.model)
+        self.inference = Predict(self, self.video_stream)
 
     def start(self):
-        if hasattr(self, 'inference'):
+        if self.model is not None:
             if not self.inference.running:
                 self.inference.start()
                 self.inference.inference_complete.connect(self.update_frame)
@@ -56,13 +60,13 @@ class InferenceController(Inference):
     def stop(self):
         if self.inference.running:
             self.inference.running = False
-            self.inference.wait()
             self.inference.inference_complete.disconnect()
+            self.inference.requestInterruption()
 
     def update_frame(self, img):
         self.video_stream.inference_frame = np.copy(img)
-        h, w, c = img
+        h, w, c = img.shape
         qimage = QImage(img, w, h, w * c, QImage.Format.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)
-        pixmap = pixmap.scaled(self.ui.videoCaptureLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
-        self.ui.self.ui.videoCaptureLabel.setPixmap(pixmap)
+        pixmap = pixmap.scaled(self.ui.inferenceLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
+        self.ui.inferenceLabel.setPixmap(pixmap)
