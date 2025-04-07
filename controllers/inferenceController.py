@@ -52,7 +52,7 @@ class InferenceController(QObject):
         self.inference = Predict(self, self.video_stream)
 
     def start(self):
-        if self.model and self.video_stream.stream is not None:
+        if self.model is not None and self.video_stream.status:
             if not self.inference.running:
                 self.inference.start()
                 self.inference.inference_complete.connect(self.update_frame)
