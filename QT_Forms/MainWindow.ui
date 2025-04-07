@@ -35,7 +35,7 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_6" stretch="10,5">
+      <layout class="QVBoxLayout" name="verticalLayout_6" stretch="10,5,0">
        <item>
         <widget class="QSplitter" name="splitter">
          <property name="orientation">
@@ -173,6 +173,18 @@
          </property>
         </spacer>
        </item>
+       <item>
+        <widget class="QLabel" name="psnrLabel">
+         <property name="font">
+          <font>
+           <pointsize>28</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>
@@ -214,8 +226,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>358</width>
-            <height>235</height>
+            <width>357</width>
+            <height>240</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -384,7 +396,7 @@
      <x>0</x>
      <y>0</y>
      <width>1029</width>
-     <height>33</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

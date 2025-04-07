@@ -123,6 +123,14 @@ class Ui_mainWindow(object):
 
         self.verticalLayout_6.addItem(self.verticalSpacer)
 
+        self.psnrLabel = QLabel(self.videoCaptureWidget)
+        self.psnrLabel.setObjectName(u"psnrLabel")
+        font = QFont()
+        font.setPointSize(28)
+        self.psnrLabel.setFont(font)
+
+        self.verticalLayout_6.addWidget(self.psnrLabel)
+
         self.verticalLayout_6.setStretch(0, 10)
         self.verticalLayout_6.setStretch(1, 5)
 
@@ -153,7 +161,7 @@ class Ui_mainWindow(object):
         self.settingsScrollArea.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.settingsScrollAreaContents = QWidget()
         self.settingsScrollAreaContents.setObjectName(u"settingsScrollAreaContents")
-        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 358, 235))
+        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 357, 240))
         self.verticalLayout_2 = QVBoxLayout(self.settingsScrollAreaContents)
         self.verticalLayout_2.setSpacing(10)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -285,7 +293,7 @@ class Ui_mainWindow(object):
         mainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 1029, 33))
+        self.menuBar.setGeometry(QRect(0, 0, 1029, 22))
         self.menu = QMenu(self.menuBar)
         self.menu.setObjectName(u"menu")
         mainWindow.setMenuBar(self.menuBar)
@@ -313,6 +321,7 @@ class Ui_mainWindow(object):
         self.videoCaptureLabel.setText("")
         self.label_2.setText(QCoreApplication.translate("mainWindow", u"\u041f\u043e\u0441\u0442\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430", None))
         self.inferenceLabel.setText("")
+        self.psnrLabel.setText("")
         self.formatLabel.setText(QCoreApplication.translate("mainWindow", u"\u0424\u043e\u0440\u043c\u0430\u0442", None))
         self.modelLabel.setText(QCoreApplication.translate("mainWindow", u"\u041c\u043e\u0434\u0435\u043b\u044c", None))
         self.exposureAuto.setText(QCoreApplication.translate("mainWindow", u"\u0410\u0432\u0442\u043e", None))

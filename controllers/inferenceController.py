@@ -3,6 +3,7 @@ from pathlib import PurePath, Path
 
 sys.path.append(__file__)
 from utils import Inference
+from utils.metrics import psnr
 from PySide6.QtCore import QThread, Signal, QObject, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
 import numpy as np
@@ -22,9 +23,10 @@ class Predict(QThread):
         self.inference = Inference()
         self.inference.create(self.controller.model)
         self.running = True
-        while not self.isInterruptionRequested() :
-            result = self.inference(self.stream.frame)
-            self.inference_complete.emit(result)
+        while not self.isInterruptionRequested():
+            frame = np.copy(self.stream.frame)
+            result = self.inference(frame)
+            self.inference_complete.emit(result, frame)
         self.inference.clear()
 
 
@@ -69,10 +71,15 @@ class InferenceController(QObject):
             self.inference.requestInterruption()
 
     @Slot()
-    def update_frame(self, img):
+    def update_frame(self, img, _):
         self.video_stream.inference_frame = np.copy(img)
         h, w, c = img.shape
         qimage = QImage(img, w, h, w * c, QImage.Format.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)
         pixmap = pixmap.scaled(self.ui.inferenceLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.inferenceLabel.setPixmap(pixmap)
+
+    @Slot()
+    def calculate_psnr(self, result, frame):
+        self.ui.psnrLabel.setText(f'PSNR = {psnr(result, frame)}')
+
