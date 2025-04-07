@@ -3,7 +3,7 @@ from pathlib import PurePath, Path
 
 sys.path.append(__file__)
 from utils import Inference
-from PySide6.QtCore import QThread, Signal, QObject
+from PySide6.QtCore import QThread, Signal, QObject, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
 import numpy as np
 
@@ -47,16 +47,19 @@ class InferenceController(QObject):
         self.ui.startButton.clicked.connect(self.start)
         self.ui.stopButton.clicked.connect(self.stop)
 
+    @Slot()
     def update_model(self):
         self.model = self.model = self.models_dir / self.ui.modelComboBox.currentText()
         self.inference = Predict(self, self.video_stream)
 
+    @Slot()
     def start(self):
         if self.model is not None and self.video_stream.status:
             if not self.inference.running:
                 self.inference.start()
                 self.inference.inference_complete.connect(self.update_frame)
 
+    @Slot()
     def stop(self):
         if not hasattr(self, 'inference'):
             return
@@ -65,6 +68,7 @@ class InferenceController(QObject):
             self.inference.inference_complete.disconnect()
             self.inference.requestInterruption()
 
+    @Slot()
     def update_frame(self, img):
         self.video_stream.inference_frame = np.copy(img)
         h, w, c = img.shape

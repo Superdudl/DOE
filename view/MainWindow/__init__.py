@@ -10,7 +10,11 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__()
         self.ui = Ui_mainWindow()
         self.ui.setupUi(self)
+        self.setupUI()
         self.find_models()
+
+    def setupUI(self):
+        self.ui.splitter.setSizes([100,100])
 
     def find_models(self):
         path = Path(PurePath(__file__).parents[2], 'src', 'pretrained_models')

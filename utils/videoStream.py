@@ -58,6 +58,7 @@ class VideoStream(QObject):
             self.stream.running = False
             self.stream.wait()
 
+    @Slot()
     def update_frame(self, img):
         self.frame = np.copy(img)
         h, w, c = self.frame.shape
