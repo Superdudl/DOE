@@ -1,10 +1,9 @@
 import sys
 
-sys.path.append(__file__)
-import tensorrt as trt
 import numpy as np
 import pycuda.driver as cuda
 import time
+import tensorrt as trt
 
 
 class Inference:
@@ -39,7 +38,6 @@ class Inference:
         return self
 
     def __call__(self, input: np.uint8):
-        input = (np.random.rand(580, 780, 3) * 255).astype(np.uint8)
         t1 = time.time()
         input = np.ascontiguousarray(np.float32(input / 255).transpose(2, 0, 1))
         input = input.reshape(1, *input.shape)
@@ -48,7 +46,7 @@ class Inference:
         self.stream.synchronize()
         cuda.memcpy_dtoh_async(self.output, self.d_output, self.stream)
         self.stream.synchronize()
-        result = np.clip(self.output[0].transpose(1, 2, 0), 0, 255).astype(np.uint8)
+        result = np.clip(self.output[0].transpose(1, 2, 0) * 255, 0, 255).astype(np.uint8)
         print(f' FPS: {1/(time.time() - t1):.2f}')
         return np.ascontiguousarray(result)
 
