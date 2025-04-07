@@ -58,6 +58,8 @@ class InferenceController(QObject):
                 self.inference.inference_complete.connect(self.update_frame)
 
     def stop(self):
+        if not hasattr(self, 'inference'):
+            return
         if self.inference.running:
             self.inference.running = False
             self.inference.inference_complete.disconnect()
