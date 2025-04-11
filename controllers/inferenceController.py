@@ -58,7 +58,10 @@ class InferenceController(QObject):
         if self.model is not None and self.video_stream.status:
             if not self.inference.running:
                 self.inference.start()
+
+                # Slot connection
                 self.inference.inference_complete.connect(self.update_frame)
+                self.inference.inference_complete.connect(self.calculate_psnr)
 
     @Slot()
     def stop(self):
@@ -81,5 +84,5 @@ class InferenceController(QObject):
 
     @Slot()
     def calculate_psnr(self, result, frame):
-        self.ui.psnrLabel.setText(f'PSNR = {psnr(result, frame)}')
+        self.ui.psnrLabel.setText(f'PSNR = {psnr(result, frame):.2f}')
 
