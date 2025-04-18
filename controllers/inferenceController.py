@@ -58,7 +58,7 @@ class InferenceController(QObject):
         if self.model is not None and self.video_stream.status:
             if not self.inference.running:
                 self.inference.start()
-
+                self.ui.modelComboBox.setEnabled(False)
                 # Slot connection
                 self.inference.inference_complete.connect(self.update_frame)
                 self.inference.inference_complete.connect(self.calculate_psnr)
@@ -72,6 +72,7 @@ class InferenceController(QObject):
             self.inference.inference_complete.disconnect()
             self.inference.requestInterruption()
             self.inference.wait()
+            self.ui.modelComboBox.setEnabled(True)
 
     @Slot()
     def update_frame(self, img, _):
