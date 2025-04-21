@@ -7,7 +7,7 @@ sys.path.append(__file__)
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtWidgets import QMessageBox, QFileDialog
 from PySide6.QtGui import QImage, QPixmap, Qt
-from controllers import CameraController, InferenceController
+from controllers import CameraController, InferenceController, RecordController
 from utils import VideoStream
 
 
@@ -22,6 +22,7 @@ class MainController(QObject):
     def setup_controllers(self):
         self.video_stream = VideoStream(self.ui)
         self.inference_controller = InferenceController(self.ui, self.video_stream)
+        self.record_controller = RecordController(self.ui, self.window, self.video_stream)
 
     def connect_slots(self):
         self.ui.connect_camera.triggered.connect(self.connect_camera)

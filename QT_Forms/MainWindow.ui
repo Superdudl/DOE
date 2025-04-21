@@ -344,6 +344,19 @@
                </property>
               </widget>
              </item>
+             <item row="6" column="2">
+              <widget class="QPushButton" name="savePath">
+               <property name="maximumSize">
+                <size>
+                 <width>50</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
             </layout>
            </item>
           </layout>

@@ -15,6 +15,7 @@ class MainWindow(QMainWindow):
 
     def setupUI(self):
         self.ui.splitter.setSizes([100,100])
+        self.ui.stopRecordButton.setEnabled(False)
 
     def find_models(self):
         path = Path(PurePath(__file__).parents[2], 'src', 'pretrained_models')

@@ -249,6 +249,12 @@ class Ui_mainWindow(object):
 
         self.settingsGridLayout.addWidget(self.gainAuto, 3, 2, 1, 1)
 
+        self.savePath = QPushButton(self.settingsScrollAreaContents)
+        self.savePath.setObjectName(u"savePath")
+        self.savePath.setMaximumSize(QSize(50, 16777215))
+
+        self.settingsGridLayout.addWidget(self.savePath, 6, 2, 1, 1)
+
         self.settingsGridLayout.setColumnStretch(0, 1)
         self.settingsGridLayout.setColumnStretch(1, 4)
         self.settingsGridLayout.setColumnStretch(2, 1)
@@ -329,6 +335,7 @@ class Ui_mainWindow(object):
         self.saveLabel.setText(QCoreApplication.translate("mainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0432", None))
         self.gainLabel.setText(QCoreApplication.translate("mainWindow", u"\u0423\u0441\u0438\u043b\u0435\u043d\u0438\u0435", None))
         self.gainAuto.setText(QCoreApplication.translate("mainWindow", u"\u0410\u0432\u0442\u043e", None))
+        self.savePath.setText(QCoreApplication.translate("mainWindow", u"...", None))
         self.startButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u0430\u0440\u0442", None))
         self.stopButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u043e\u043f", None))
         self.recordButton.setText(QCoreApplication.translate("mainWindow", u"\u0417\u0430\u043f\u0438\u0441\u044c", None))
