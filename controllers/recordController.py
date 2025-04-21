@@ -1,7 +1,5 @@
 import sys
 
-from onnxruntime.transformers.models.gpt2.parity_check_helper import inference
-
 sys.path.append(__file__)
 
 from PySide6.QtCore import QObject, Slot, QSettings, QThread
@@ -10,8 +8,6 @@ from pathlib import Path, PurePath
 import av
 from datetime import datetime
 import time
-from threading import Thread
-
 
 class Encoder(QThread):
     def __init__(self, ui, video_stream, filename, stream):

@@ -1,12 +1,9 @@
 import sys
 
-import numpy as np
-
 sys.path.append(__file__)
 
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtWidgets import QMessageBox, QFileDialog
-from PySide6.QtGui import QImage, QPixmap, Qt
 from controllers import CameraController, InferenceController, RecordController
 from utils import VideoStream
 
