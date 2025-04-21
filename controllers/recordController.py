@@ -9,6 +9,7 @@ import av
 from datetime import datetime
 import time
 
+
 class Encoder(QThread):
     def __init__(self, ui, video_stream, filename, stream):
         """
@@ -41,17 +42,22 @@ class Encoder(QThread):
 
     def run(self):
         start_time = time.time()
+        pts = 0
         while not self.requestInterruption():
             current_time = time.time() - start_time
 
             frame = None
 
+            new_pts = int(current_time * self.container.time_base.denominator / self.container.time_base.numerator)
+            if new_pts > pts:
+                pts = new_pts
+            else:
+                continue
+
             if self.stream == 'camera':
                 frame = av.VideoFrame.from_ndarray(self.video_stream.frame, 'rgb24')
             elif self.stream == 'inference':
                 frame = av.VideoFrame.from_ndarray(self.video_stream.inference_frame, 'rgb24')
-
-            pts = int(current_time * self.container.time_base.denominator / self.container.time_base.numerator)
 
             frame.pts = pts
 
@@ -99,7 +105,7 @@ class RecordController:
             return
 
         filename = f'{datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S")}.mp4'
-        if  self.video_stream.frame is not None:
+        if self.video_stream.frame is not None:
             self.camera_encoder = Encoder(self.ui, self.video_stream, filename, stream='camera')
             self.camera_encoder.start()
         if self.video_stream.inference_frame is not None:
@@ -127,8 +133,6 @@ class RecordController:
         self.ui.stopButton.setEnabled(True)
         self.ui.recordButton.setEnabled(True)
         self.ui.stopRecordButton.setEnabled(False)
-
-
 
 
 if __name__ == '__main__':
