@@ -1,3 +1,6 @@
 .idea
 /src/pretrained_models/*
 !/src/pretrained_models/.gitkeep
+build
+dist
+*.spec

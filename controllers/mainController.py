@@ -28,6 +28,10 @@ class MainController(QObject):
         self.ui.connect_camera.triggered.connect(self.connect_camera)
         self.ui.load_video.triggered.connect(self.open_video)
 
+    def __del__(self):
+        self.video_stream.stop_stream()
+        self.inference_controller.stop()
+
     @Slot()
     def connect_camera(self):
         self.video_stream.start_stream('camera')
@@ -41,6 +45,7 @@ class MainController(QObject):
         self.ui.gainAuto.setEnabled(True)
         self.camera_controller = CameraController(self.video_stream.stream, self.ui)
 
+    @Slot()
     def open_video(self):
         self.inference_controller.stop()
         filters = "Видео (*.mp4 *.avi *.mkv)"

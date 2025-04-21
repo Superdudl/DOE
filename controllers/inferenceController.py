@@ -10,7 +10,7 @@ import numpy as np
 
 
 class Predict(QThread):
-    inference_complete = Signal(np.float32)
+    inference_complete = Signal(np.uint8, np.uint8)
 
     def __init__(self, controller, stream):
         super().__init__()
@@ -19,7 +19,6 @@ class Predict(QThread):
         self.running = False
 
     def run(self):
-        # if self.inference.model is not None and self.stream.status:
         self.inference = Inference()
         self.inference.create(self.controller.model)
         self.running = True
@@ -59,7 +58,10 @@ class InferenceController(QObject):
         if self.model is not None and self.video_stream.status:
             if not self.inference.running:
                 self.inference.start()
+                self.ui.modelComboBox.setEnabled(False)
+                # Slot connection
                 self.inference.inference_complete.connect(self.update_frame)
+                self.inference.inference_complete.connect(self.calculate_psnr)
 
     @Slot()
     def stop(self):
@@ -69,6 +71,8 @@ class InferenceController(QObject):
             self.inference.running = False
             self.inference.inference_complete.disconnect()
             self.inference.requestInterruption()
+            self.inference.wait()
+            self.ui.modelComboBox.setEnabled(True)
 
     @Slot()
     def update_frame(self, img, _):
@@ -81,5 +85,5 @@ class InferenceController(QObject):
 
     @Slot()
     def calculate_psnr(self, result, frame):
-        self.ui.psnrLabel.setText(f'PSNR = {psnr(result, frame)}')
+        self.ui.psnrLabel.setText(f'PSNR = {psnr(result, frame):.2f}')
 

@@ -56,6 +56,7 @@ class VideoStream(QObject):
     def stop_stream(self):
         if self.stream is not None:
             self.stream.running = False
+            self.status = False
             self.stream.wait()
 
     @Slot()
