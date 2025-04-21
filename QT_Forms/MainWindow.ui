@@ -35,7 +35,7 @@
         <verstretch>0</verstretch>
        </sizepolicy>
       </property>
-      <layout class="QVBoxLayout" name="verticalLayout_6" stretch="10,5,0">
+      <layout class="QVBoxLayout" name="verticalLayout_6" stretch="10,3,0">
        <item>
         <widget class="QSplitter" name="splitter">
          <property name="orientation">

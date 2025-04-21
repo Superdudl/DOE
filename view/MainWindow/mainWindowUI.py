@@ -132,7 +132,7 @@ class Ui_mainWindow(object):
         self.verticalLayout_6.addWidget(self.psnrLabel)
 
         self.verticalLayout_6.setStretch(0, 10)
-        self.verticalLayout_6.setStretch(1, 5)
+        self.verticalLayout_6.setStretch(1, 3)
 
         self.horizontalLayout.addWidget(self.videoCaptureWidget)
 
