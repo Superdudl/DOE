@@ -73,6 +73,7 @@ class InferenceController(QObject):
             self.inference.requestInterruption()
             self.inference.wait()
             self.ui.modelComboBox.setEnabled(True)
+            self.video_stream.inference_frame = None
 
     @Slot()
     def update_frame(self, img, _):
