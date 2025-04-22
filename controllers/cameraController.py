@@ -4,7 +4,7 @@ sys.path.append(__file__)
 
 import numpy as np
 from PySide6.QtCore import QObject, Slot
-from PySide6.QtGui import QIntValidator
+from PySide6.QtGui import QRegularExpressionValidator
 
 
 class CameraController(QObject):
@@ -15,12 +15,12 @@ class CameraController(QObject):
         self.setupUI()
         self.connect_slots()
 
-        # Validators
-        self.ui.gainEdit.setValidator(QIntValidator(self.camera.GainRaw.Min, self.camera.GainRaw.Max))
-        self.ui.exposureEdit.setValidator(
-            QIntValidator(self.camera.ExposureTimeAbs.Min, self.camera.ExposureTimeAbs.Max))
-
     def setupUI(self):
+        # Validators
+        validator = QRegularExpressionValidator('[0-9]*')
+        self.ui.gainEdit.setValidator(validator)
+        self.ui.exposureEdit.setValidator(validator)
+
         # Exposure UI
         if self.camera.ExposureAuto.Value == "Continuous":
             self.ui.exposureAuto.setChecked(True)
@@ -46,7 +46,9 @@ class CameraController(QObject):
     @Slot()
     def setGain(self):
         value = float(self.ui.gainEdit.text())
+        value = np.clip(value, self.camera.GainRaw.Min, self.camera.GainRaw.Max)
         self.camera.GainRaw.Value = int(value)
+        self.ui.gainEdit.setText(str(int(self.camera.GainRaw.Value)))
 
     @Slot()
     def setGainAuto(self):
@@ -61,7 +63,9 @@ class CameraController(QObject):
     @Slot()
     def setExposure(self):
         value = float(self.ui.exposureEdit.text())
+        value = np.clip(value, self.camera.ExposureTimeAbs.Min, self.camera.ExposureTimeAbs.Max)
         self.camera.ExposureTimeAbs.Value = value
+        self.ui.exposureEdit.setText(str(int(self.camera.ExposureTimeAbs.Value)))
 
     @Slot()
     def setExposureAuto(self):

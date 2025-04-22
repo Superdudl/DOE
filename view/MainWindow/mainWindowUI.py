@@ -161,7 +161,7 @@ class Ui_mainWindow(object):
         self.settingsScrollArea.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.settingsScrollAreaContents = QWidget()
         self.settingsScrollAreaContents.setObjectName(u"settingsScrollAreaContents")
-        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 357, 240))
+        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 358, 235))
         self.verticalLayout_2 = QVBoxLayout(self.settingsScrollAreaContents)
         self.verticalLayout_2.setSpacing(10)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -177,6 +177,10 @@ class Ui_mainWindow(object):
 
         self.saveEdit = QLineEdit(self.settingsScrollAreaContents)
         self.saveEdit.setObjectName(u"saveEdit")
+        self.saveEdit.setDragEnabled(False)
+        self.saveEdit.setReadOnly(True)
+        self.saveEdit.setCursorMoveStyle(Qt.CursorMoveStyle.LogicalMoveStyle)
+        self.saveEdit.setClearButtonEnabled(False)
 
         self.settingsGridLayout.addWidget(self.saveEdit, 6, 1, 1, 1)
 
@@ -299,7 +303,7 @@ class Ui_mainWindow(object):
         mainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 1029, 22))
+        self.menuBar.setGeometry(QRect(0, 0, 1029, 33))
         self.menu = QMenu(self.menuBar)
         self.menu.setObjectName(u"menu")
         mainWindow.setMenuBar(self.menuBar)
@@ -329,6 +333,7 @@ class Ui_mainWindow(object):
         self.inferenceLabel.setText("")
         self.psnrLabel.setText("")
         self.formatLabel.setText(QCoreApplication.translate("mainWindow", u"\u0424\u043e\u0440\u043c\u0430\u0442", None))
+        self.saveEdit.setPlaceholderText("")
         self.modelLabel.setText(QCoreApplication.translate("mainWindow", u"\u041c\u043e\u0434\u0435\u043b\u044c", None))
         self.exposureAuto.setText(QCoreApplication.translate("mainWindow", u"\u0410\u0432\u0442\u043e", None))
         self.exposureLabel.setText(QCoreApplication.translate("mainWindow", u"\u0412\u0440\u0435\u043c\u044f \u043d\u0430\u043a\u043e\u043f\u043b\u0435\u043d\u0438\u044f", None))
