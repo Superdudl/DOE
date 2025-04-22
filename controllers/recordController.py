@@ -6,7 +6,6 @@ from PySide6.QtCore import QObject, Slot, QSettings, QThread
 from PySide6.QtWidgets import QMessageBox, QFileDialog
 from pathlib import Path, PurePath
 import av
-from fractions import Fraction
 from datetime import datetime
 import time
 
@@ -30,32 +29,28 @@ class Encoder(QThread):
         elif stream == 'inference':
             self.path = path / 'Inference' / filename
 
-        if not self.path.parent.exists():
-            self.path.parent.mkdir(parents=True, exist_ok=True)
-
         self.create_container()
 
     def create_container(self):
-        framerate = 30
         if self.video_stream.status and self.video_stream.frame is not None:
             h, w, c = self.video_stream.frame.shape
             self.container = av.open(self.path, mode='w')
-            self.av_stream = self.container.add_stream('mpeg4', rate=framerate)
+            self.av_stream = self.container.add_stream('libx264', rate=30)
             self.av_stream.width = w
             self.av_stream.height = h
             self.av_stream.pix_fmt = 'yuv420p'
-            self.av_stream.codec_context.time_base = Fraction(1 , framerate)
 
     def run(self):
-        last_time = time.time()
+        start_time = time.time()
         pts = 0
-        while not self.isInterruptionRequested():
+        while not self.requestInterruption():
+            current_time = time.time() - start_time
 
             frame = None
-            current_time = time.time()
-            if current_time - last_time > self.av_stream.codec_context.time_base:
-                pts += self.av_stream.codec_context.time_base
-                last_time = current_time
+
+            new_pts = int(current_time * self.container.time_base.denominator / self.container.time_base.numerator)
+            if new_pts > pts:
+                pts = new_pts
             else:
                 continue
 
@@ -64,7 +59,7 @@ class Encoder(QThread):
             elif self.stream == 'inference':
                 frame = av.VideoFrame.from_ndarray(self.video_stream.inference_frame, 'rgb24')
 
-            frame.pts = int(round(pts / self.av_stream.codec_context.time_base))
+            frame.pts = pts
 
             if frame is not None:
                 for packet in self.av_stream.encode(frame):
@@ -125,7 +120,7 @@ class RecordController:
 
     @Slot()
     def stop_record(self):
-        if self.camera_encoder is None and self.inference_encoder is None:
+        if (self.camera_encoder and self.inference_encoder) is None:
             return
 
         if self.camera_encoder is not None:
