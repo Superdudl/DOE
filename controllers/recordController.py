@@ -56,6 +56,28 @@ class Encoder(QThread):
             frame = self.video_stream.frame
             if self.video_stream.inference_frame is not None:
                 infer_frame = self.video_stream.inference_frame
+                _h = frame.shape[0]
+                h = infer_frame.shape[0]
+                if _h > h:
+                    pad = _h - h
+                    infer_frame = cv2.copyMakeBorder(infer_frame,
+                                                     top=int(pad / 2) if pad % 2 == 0 else 0,
+                                                     bottom=int(pad / 2) if pad % 2 == 0 else pad,
+                                                     left=0,
+                                                     right=0,
+                                                     borderType=cv2.BORDER_CONSTANT,
+                                                     value=[0, 0, 0]
+                                                     )
+                elif _h < h:
+                    pad = h - _h
+                    frame = cv2.copyMakeBorder(frame,
+                                               top=int(pad / 2) if pad % 2 == 0 else 0,
+                                               bottom=int(pad / 2) if pad % 2 == 0 else pad,
+                                               left=0,
+                                               right=0,
+                                               borderType=cv2.BORDER_CONSTANT,
+                                               value=[0, 0, 0]
+                                               )
                 frame = cv2.hconcat([frame, infer_frame])
 
             frame = av.VideoFrame.from_ndarray(frame, 'rgb24')

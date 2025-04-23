@@ -3,6 +3,7 @@ from pathlib import PurePath, Path
 
 sys.path.append(__file__)
 from utils import Inference
+import cv2
 from utils.metrics import psnr
 from PySide6.QtCore import QThread, Signal, QObject, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
@@ -20,10 +21,11 @@ class Predict(QThread):
 
     def run(self):
         self.inference = Inference()
-        self.inference.create(self.controller.model, self.stream.frame.shape)
+        self.inference.create(self.controller.model)
         self.running = True
         while not self.isInterruptionRequested():
             frame = np.copy(self.stream.frame)
+            frame = cv2.resize(frame, (780, 580), interpolation=cv2.INTER_LANCZOS4)
             result = self.inference(frame)
             self.inference_complete.emit(result, frame)
         self.inference.clear()

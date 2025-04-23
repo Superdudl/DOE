@@ -13,7 +13,7 @@ class Inference:
         device = cuda.Device(0)
         self.ctx = device.make_context()
 
-    def create(self, model, input_size):
+    def create(self, model, input_size = (580, 780, 3)):
         self.model = model
         TRT_LOGGER = trt.Logger(trt.Logger.INFO)
 
