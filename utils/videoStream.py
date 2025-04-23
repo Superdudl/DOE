@@ -5,7 +5,8 @@ sys.path.append(__file__)
 import numpy as np
 from PySide6.QtCore import QObject, QThread, Signal, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
-from utils import VideoCapture, Inference
+from utils import VideoCapture
+import time
 
 
 class CameraStream(QThread):
@@ -27,6 +28,21 @@ class CameraStream(QThread):
                 continue
             self.frame_grabbed.emit(img)
 
+class CameraSimulation(QThread):
+    frame_grabbed = Signal(np.uint8)
+
+    def __init__(self):
+        super().__init__()
+        self.running = False
+
+    def run(self, /):
+        self.running = True
+        h, w, c = [580, 780, 3]
+        while self.running:
+            img = np.random.randint(0, 256, (h, w, c), dtype=np.uint8)
+            time.sleep(0.033)
+            self.frame_grabbed.emit(img)
+
 
 class VideoFileStream(QThread):
     pass
@@ -34,7 +50,8 @@ class VideoFileStream(QThread):
 
 class VideoStream(QObject):
     sources = {'camera': CameraStream,
-               'videofile': VideoFileStream}
+               'videofile': VideoFileStream,
+               'DEBUG': CameraSimulation}
     def __init__(self, ui, parent=None):
         super().__init__(parent)
         self.ui = ui

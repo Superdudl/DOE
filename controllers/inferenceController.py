@@ -20,7 +20,7 @@ class Predict(QThread):
 
     def run(self):
         self.inference = Inference()
-        self.inference.create(self.controller.model)
+        self.inference.create(self.controller.model, self.stream.frame.shape)
         self.running = True
         while not self.isInterruptionRequested():
             frame = np.copy(self.stream.frame)

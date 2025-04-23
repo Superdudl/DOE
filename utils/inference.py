@@ -13,24 +13,28 @@ class Inference:
         device = cuda.Device(0)
         self.ctx = device.make_context()
 
-    def create(self, model):
+    def create(self, model, input_size):
         self.model = model
         TRT_LOGGER = trt.Logger(trt.Logger.INFO)
 
         with open(self.model, "rb") as f, trt.Runtime(TRT_LOGGER) as runtime:
             self.engine = runtime.deserialize_cuda_engine(f.read())
 
+        h, w, c = input_size
         self.context = self.engine.create_execution_context()
-        self.input_size = self.context.get_tensor_shape(self.engine.get_tensor_name(0))
+        self.input_size = trt.Dims((1, c, h, w))
+        self.d_input = cuda.mem_alloc(trt.volume(self.input_size) * trt.int32.itemsize)
+        self.stream = cuda.Stream()
+
+        self.context.set_input_shape(self.engine.get_tensor_name(0), self.input_size)
+        assert self.context.all_binding_shapes_specified
 
         self.output_size = self.context.get_tensor_shape(self.engine.get_tensor_name(1))
         self.output = cuda.pagelocked_empty(tuple(self.context.get_tensor_shape(self.engine.get_tensor_name(1))),
                                             dtype=np.float32)
 
-        self.d_input = cuda.mem_alloc(trt.volume(self.input_size) * trt.int32.itemsize)
         self.d_output = cuda.mem_alloc(self.output.nbytes)
 
-        self.stream = cuda.Stream()
         self.bindings = [int(self.d_input), int(self.d_output)]
 
         for i in range(self.engine.num_io_tensors):

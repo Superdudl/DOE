@@ -6,6 +6,7 @@ from PySide6.QtCore import QObject, Slot
 from PySide6.QtWidgets import QMessageBox, QFileDialog
 from controllers import CameraController, InferenceController, RecordController
 from utils import VideoStream
+from utils import DEBUG
 
 
 class MainController(QObject):
@@ -31,7 +32,9 @@ class MainController(QObject):
 
     @Slot()
     def connect_camera(self):
-        self.video_stream.start_stream('camera')
+        if DEBUG: source = 'DEBUG'
+        else: source = 'camera'
+        self.video_stream.start_stream(source)
         if not self.video_stream.status:
             QMessageBox.warning(self.window, "Ошибка", "Камера не подключена")
             return
@@ -40,7 +43,8 @@ class MainController(QObject):
         self.ui.formatEdit.setEnabled(True)
         self.ui.exposureAuto.setEnabled(True)
         self.ui.gainAuto.setEnabled(True)
-        self.camera_controller = CameraController(self.video_stream.stream, self.ui)
+        if not DEBUG :
+            self.camera_controller = CameraController(self.video_stream.stream, self.ui)
 
     @Slot()
     def open_video(self):
