@@ -20,8 +20,8 @@ class CameraStream(QThread):
     def run(self):
         if self.cap.camera is None:
             return
-        self.running = True
         self.cap.start()
+        self.running = True
         while self.running:
             img = self.cap.get_frame()
             if img is None:
@@ -61,6 +61,7 @@ class VideoStream(QObject):
         self.status = None
 
     def start_stream(self, source):
+        if self.stream is not None: return
         assert source in self.sources.keys(), f"Выберите из доступных источников {self.sources.keys()}"
         self.stream = self.sources[source]()
         self.stream.start() # Move to Thread
@@ -71,10 +72,11 @@ class VideoStream(QObject):
             self.stream.frame_grabbed.connect(self.update_frame)
 
     def stop_stream(self):
-        if self.stream is not None:
-            self.stream.running = False
-            self.status = False
-            self.stream.wait()
+        if self.stream is None: return
+        self.stream.running = False
+        self.status = False
+        self.stream.wait()
+        self.stream = None
 
     @Slot()
     def update_frame(self, img):

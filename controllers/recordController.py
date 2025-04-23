@@ -14,9 +14,6 @@ import time
 
 class Encoder(QThread):
     def __init__(self, path, video_stream, filename):
-        """
-        stream: ['camera', 'inference']
-        """
         super().__init__()
         self.video_stream = video_stream
         self.container = None
@@ -102,6 +99,7 @@ class RecordController:
                                                       QFileDialog.Option.ShowDirsOnly)
         if len(video_path):
             self.ui.saveEdit.setText(str(video_path))
+            self.record_path = Path(video_path)
             self.settings.setValue('record/path', video_path)
 
     @Slot()
