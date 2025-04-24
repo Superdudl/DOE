@@ -32,7 +32,9 @@ class Encoder(QThread):
         if self.video_stream.status and self.video_stream.frame is not None:
             h, w, c = self.video_stream.frame.shape
             if self.video_stream.inference_frame is not None:
-                w = w * 2
+                w = w + self.video_stream.inference_frame.shape[1]
+                _h = self.video_stream.inference_frame.shape[0]
+                h = _h if (_h > h) else h
             self.container = av.open(self.path, mode='w')
             self.av_stream = self.container.add_stream('h264', rate=framerate)
             self.av_stream.width = w

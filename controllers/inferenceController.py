@@ -21,11 +21,11 @@ class Predict(QThread):
 
     def run(self):
         self.inference = Inference()
-        self.inference.create(self.controller.model)
+        self.inference.create(self.controller.model, self.stream.frame.shape)
         self.running = True
         while not self.isInterruptionRequested():
             frame = np.copy(self.stream.frame)
-            frame = cv2.resize(frame, (780, 580), interpolation=cv2.INTER_LANCZOS4)
+            # frame = cv2.resize(frame, (780, 580), interpolation=cv2.INTER_LANCZOS4)
             result = self.inference(frame)
             self.inference_complete.emit(result, frame)
         self.inference.clear()

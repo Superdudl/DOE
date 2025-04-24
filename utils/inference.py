@@ -41,7 +41,7 @@ class Inference:
             self.context.set_tensor_address(self.engine.get_tensor_name(i), self.bindings[i])
         return self
 
-    def __call__(self, input: np.uint8):
+    def __call__(self, input: np.ndarray):
         t1 = time.time()
         input = np.ascontiguousarray(np.float32(input / 255).transpose(2, 0, 1))
         input = input.reshape(1, *input.shape)

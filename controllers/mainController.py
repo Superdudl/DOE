@@ -49,6 +49,7 @@ class MainController(QObject):
     @Slot()
     def open_video(self):
         self.inference_controller.stop()
+        self.video_stream.stop_stream()
         filters = "Видео (*.mp4 *.avi *.mkv)"
         video_path, _ = QFileDialog.getOpenFileName(self.window, "Выберите видео", '', filters)
 

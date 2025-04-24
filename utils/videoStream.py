@@ -10,6 +10,9 @@ import time
 
 
 class CameraStream(QThread):
+    """
+    Класс для захвата кадров с камеры в отдельном потоке
+    """
     frame_grabbed = Signal(np.uint8)
 
     def __init__(self):
@@ -29,6 +32,9 @@ class CameraStream(QThread):
             self.frame_grabbed.emit(img)
 
 class CameraSimulation(QThread):
+    """
+    Класс для симуляции захвата кадров для DEBUG режима в отдельном потоке
+    """
     frame_grabbed = Signal(np.uint8)
 
     def __init__(self):
@@ -37,7 +43,7 @@ class CameraSimulation(QThread):
 
     def run(self, /):
         self.running = True
-        h, w, c = [400, 780, 3]
+        h, w, c = [1080, 1920, 3]
         while self.running:
             img = np.random.randint(0, 256, (h, w, c), dtype=np.uint8)
             time.sleep(0.033)
@@ -45,6 +51,9 @@ class CameraSimulation(QThread):
 
 
 class VideoFileStream(QThread):
+    """
+    Класс для захвата кадров из видеофайла в отдельном потоке
+    """
     pass
 
 
@@ -80,8 +89,8 @@ class VideoStream(QObject):
 
     @Slot()
     def update_frame(self, img):
+        h, w, c = img.shape
         self.frame = np.copy(img)
-        h, w, c = self.frame.shape
         qimage = QImage(self.frame, w, h, w * c, QImage.Format.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)
         pixmap = pixmap.scaled(self.ui.videoCaptureLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
