@@ -23,7 +23,7 @@ class Predict(QThread):
         self.inference = Inference()
         self.inference.create(self.controller.model, self.stream.frame.shape)
         self.running = True
-        while not self.isInterruptionRequested():
+        while not self.isInterruptionRequested() and self.stream.status:
             frame = np.copy(self.stream.frame)
             # frame = cv2.resize(frame, (780, 580), interpolation=cv2.INTER_LANCZOS4)
             result = self.inference(frame)
@@ -52,7 +52,7 @@ class InferenceController(QObject):
 
     @Slot()
     def update_model(self):
-        self.model = self.model = self.models_dir / self.ui.modelComboBox.currentText()
+        self.model = self.models_dir / self.ui.modelComboBox.currentText()
         self.inference = Predict(self, self.video_stream)
 
     @Slot()
@@ -78,7 +78,7 @@ class InferenceController(QObject):
             self.video_stream.inference_frame = None
 
     @Slot()
-    def update_frame(self, img, _):
+    def update_frame(self, img, frame):
         self.video_stream.inference_frame = np.copy(img)
         h, w, c = img.shape
         qimage = QImage(img, w, h, w * c, QImage.Format.Format_RGB888)
