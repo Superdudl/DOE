@@ -3,4 +3,3 @@
 !/src/pretrained_models/.gitkeep
 build
 dist
-*.spec

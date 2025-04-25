@@ -31,7 +31,7 @@ class Encoder(QThread):
         import pycuda.driver as cuda
         import pycuda.autoinit
 
-        codec = 'h264_nvenc' if cuda.Device.count() > 0 else 'h264'
+        codec = 'h264_nvenc' if cuda.Device.count() > 0 and self.video_stream.inference_frame is None else 'libopenh264'
 
         framerate = 30
         if self.video_stream.status and self.video_stream.frame is not None:
