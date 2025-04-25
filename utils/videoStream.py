@@ -6,6 +6,8 @@ import numpy as np
 from PySide6.QtCore import QObject, QThread, Signal, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
 from utils import VideoCapture
+from pathlib import Path
+import cv2
 import time
 
 
@@ -31,6 +33,7 @@ class CameraStream(QThread):
                 continue
             self.frame_grabbed.emit(img)
 
+
 class CameraSimulation(QThread):
     """
     Класс для симуляции захвата кадров для DEBUG режима в отдельном потоке
@@ -50,17 +53,10 @@ class CameraSimulation(QThread):
             self.frame_grabbed.emit(img)
 
 
-class VideoFileStream(QThread):
-    """
-    Класс для захвата кадров из видеофайла в отдельном потоке
-    """
-    pass
-
-
 class VideoStream(QObject):
     sources = {'camera': CameraStream,
-               'videofile': VideoFileStream,
                'DEBUG': CameraSimulation}
+
     def __init__(self, ui, parent=None):
         super().__init__(parent)
         self.ui = ui
@@ -69,16 +65,20 @@ class VideoStream(QObject):
         self.inference_frame = None
         self.status = None
 
-    def start_stream(self, source):
+    def start_stream(self, source, filename=None):
         if self.stream is not None: return
         assert source in self.sources.keys(), f"Выберите из доступных источников {self.sources.keys()}"
-        self.stream = self.sources[source]()
-        self.stream.start() # Move to Thread
+        if source == 'videofile':
+            self.stream = self.sources[source](filename)
+        else:
+            self.stream = self.sources[source]()
+        self.stream.start()  # Move to Thread
         self.stream.wait(500)
         self.status = self.stream.running
         # Slot connection
         if self.status:
             self.stream.frame_grabbed.connect(self.update_frame)
+
 
     def stop_stream(self):
         if self.stream is None: return
@@ -95,6 +95,7 @@ class VideoStream(QObject):
         pixmap = QPixmap.fromImage(qimage)
         pixmap = pixmap.scaled(self.ui.videoCaptureLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
         self.ui.videoCaptureLabel.setPixmap(pixmap)
+
 
 if __name__ == "__main__":
     a = VideoStream

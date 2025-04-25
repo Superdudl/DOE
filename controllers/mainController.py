@@ -4,7 +4,7 @@ sys.path.append(__file__)
 
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtWidgets import QMessageBox, QFileDialog
-from controllers import CameraController, InferenceController, RecordController
+from controllers import CameraController, InferenceController, RecordController, VideoReader
 from utils import VideoStream
 from utils import DEBUG
 
@@ -21,6 +21,7 @@ class MainController(QObject):
         self.video_stream = VideoStream(self.ui)
         self.inference_controller = InferenceController(self.ui, self.video_stream)
         self.record_controller = RecordController(self.ui, self.window, self.video_stream)
+        self.video_reader = VideoReader(self.ui, self.window)
 
     def connect_slots(self):
         self.ui.connect_camera.triggered.connect(self.connect_camera)
@@ -48,10 +49,12 @@ class MainController(QObject):
 
     @Slot()
     def open_video(self):
-        self.inference_controller.stop()
-        self.video_stream.stop_stream()
         filters = "Видео (*.mp4 *.avi *.mkv)"
         video_path, _ = QFileDialog.getOpenFileName(self.window, "Выберите видео", '', filters)
+        if len(video_path) == 0: return
+        self.inference_controller.stop()
+        self.video_stream.stop_stream()
+        self.video_reader.open(video_path)
 
 
 
