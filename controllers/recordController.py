@@ -28,6 +28,11 @@ class Encoder(QThread):
         self.create_container()
 
     def create_container(self):
+        import pycuda.driver as cuda
+        import pycuda.autoinit
+
+        codec = 'h264_nvenc' if cuda.Device.count() > 0 else 'h264'
+
         framerate = 30
         if self.video_stream.status and self.video_stream.frame is not None:
             h, w, c = self.video_stream.frame.shape
@@ -36,7 +41,7 @@ class Encoder(QThread):
                 _h = self.video_stream.inference_frame.shape[0]
                 h = _h if (_h > h) else h
             self.container = av.open(self.path, mode='w')
-            self.av_stream = self.container.add_stream('h264', rate=framerate)
+            self.av_stream = self.container.add_stream(codec, rate=framerate)
             self.av_stream.width = w
             self.av_stream.height = h
             self.av_stream.pix_fmt = 'yuv420p'

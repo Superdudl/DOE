@@ -43,7 +43,7 @@ class CameraSimulation(QThread):
 
     def run(self, /):
         self.running = True
-        h, w, c = [1080, 1920, 3]
+        h, w, c = [580, 780, 3]
         while self.running:
             img = np.random.randint(0, 256, (h, w, c), dtype=np.uint8)
             time.sleep(0.033)
