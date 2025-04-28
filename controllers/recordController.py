@@ -1,11 +1,14 @@
 import sys
 
+import numpy as np
+
 sys.path.append(__file__)
 
-from PySide6.QtCore import QObject, Slot, QSettings, QThread
-from PySide6.QtWidgets import QMessageBox, QFileDialog
+from PySide6.QtCore import Slot, QSettings, QThread
+from PySide6.QtWidgets import QFileDialog
 from pathlib import Path, PurePath
 import av
+from PIL import Image
 import cv2
 from fractions import Fraction
 from datetime import datetime
@@ -114,6 +117,7 @@ class RecordController:
         self.ui.savePath.clicked.connect(self.explore_path)
         self.ui.recordButton.clicked.connect(self.start_record)
         self.ui.stopRecordButton.clicked.connect(self.stop_record)
+        self.ui.snapshotButton.clicked.connect(self.snapshot)
 
     def setup_ui(self):
         # Инициализация пути записи видео
@@ -163,6 +167,19 @@ class RecordController:
         self.ui.recordButton.setEnabled(True)
         self.ui.stopRecordButton.setEnabled(False)
 
+    def snapshot(self):
+        if self.video_stream.frame is None:
+            return
+        frame = np.copy(self.video_stream.frame)
+        if self.video_stream.inference_frame is not None:
+            infer_frame = np.copy(self.video_stream.inference_frame)
+        else:
+            infer_frame = None
+        filters = " BMP (*.bmp);;JPEG (*.jpeg);;PNG (*.png)"
+        image_path, extension = QFileDialog.getSaveFileName(None, 'Сохранить как', '', filter=filters)
+        if len(image_path) < 1: return
+        frame = frame if infer_frame is None else cv2.hconcat([frame, infer_frame])
+        Image.fromarray(frame).save(Path(image_path))
 
 if __name__ == '__main__':
     pass

@@ -1,5 +1,9 @@
 <RCC>
   <qresource prefix="icons">
+    <file>search.png</file>
+    <file>record.png</file>
+    <file>snapshot.png</file>
     <file>logo.png</file>
+    <file>stop.png</file>
   </qresource>
 </RCC>

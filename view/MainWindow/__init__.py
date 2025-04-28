@@ -20,6 +20,12 @@ class MainWindow(QMainWindow):
         self.ui.splitter.setSizes([100,100])
         self.ui.stopRecordButton.setEnabled(False)
 
+        self.ui.snapshotButton.setIcon(QPixmap(':/icons/snapshot.png'))
+        self.ui.recordButton.setIcon(QPixmap(':/icons/record.png'))
+        self.ui.stopRecordButton.setIcon(QPixmap(':/icons/stop.png'))
+
+        self.ui.savePath.setIcon(QPixmap(':/icons/search.png'))
+
     def find_models(self):
         path = Path(PurePath(__file__).parents[2], 'src', 'pretrained_models')
         for i, filename in enumerate(path.glob('*trt')):

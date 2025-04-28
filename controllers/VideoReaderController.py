@@ -4,11 +4,13 @@ sys.path.append(__file__)
 
 from PySide6.QtCore import QThread, Signal, Slot
 from PySide6.QtWidgets import QMessageBox, QProgressDialog
+from PySide6.QtGui import QPixmap
 from utils import Inference
 import numpy as np
 from pathlib import Path, PurePath
 import cv2
 import av
+from view import resources
 from datetime import datetime
 from fractions import Fraction
 import pycuda.driver as cuda
@@ -103,6 +105,7 @@ class VideoReader:
     def setup_ui(self):
         self.progress = QProgressDialog("Обработка видео...", "Отмена", 0, 100)
         self.progress.setWindowTitle(self.ui.modelComboBox.currentText())
+        self.progress.setWindowIcon(QPixmap(':/icons/logo.png'))
         self.progress.setCancelButton(None)
         self.progress.exec()
 

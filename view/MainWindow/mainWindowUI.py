@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.8.3
+## Created by: Qt User Interface Compiler version 6.9.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -147,8 +147,6 @@ class Ui_mainWindow(object):
         self.settingsWidget.setObjectName(u"settingsWidget")
         self.verticalLayout = QVBoxLayout(self.settingsWidget)
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.verticalLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
-        self.verticalLayout.setContentsMargins(-1, 0, -1, -1)
         self.settingsScrollArea = QScrollArea(self.settingsWidget)
         self.settingsScrollArea.setObjectName(u"settingsScrollArea")
         sizePolicy4 = QSizePolicy(QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Preferred)
@@ -161,7 +159,7 @@ class Ui_mainWindow(object):
         self.settingsScrollArea.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.settingsScrollAreaContents = QWidget()
         self.settingsScrollAreaContents.setObjectName(u"settingsScrollAreaContents")
-        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 358, 235))
+        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 319, 236))
         self.verticalLayout_2 = QVBoxLayout(self.settingsScrollAreaContents)
         self.verticalLayout_2.setSpacing(10)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -256,6 +254,9 @@ class Ui_mainWindow(object):
         self.savePath = QPushButton(self.settingsScrollAreaContents)
         self.savePath.setObjectName(u"savePath")
         self.savePath.setMaximumSize(QSize(50, 16777215))
+        icon = QIcon()
+        icon.addFile(u":/icons/search.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.savePath.setIcon(icon)
 
         self.settingsGridLayout.addWidget(self.savePath, 6, 2, 1, 1)
 
@@ -269,31 +270,55 @@ class Ui_mainWindow(object):
 
         self.verticalLayout.addWidget(self.settingsScrollArea)
 
-        self.buttonsLayout = QHBoxLayout()
-        self.buttonsLayout.setObjectName(u"buttonsLayout")
-        self.buttonsLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
-        self.startButton = QPushButton(self.settingsWidget)
-        self.startButton.setObjectName(u"startButton")
-
-        self.buttonsLayout.addWidget(self.startButton)
-
+        self.gridLayout = QGridLayout()
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setSizeConstraint(QLayout.SizeConstraint.SetDefaultConstraint)
         self.stopButton = QPushButton(self.settingsWidget)
         self.stopButton.setObjectName(u"stopButton")
+        self.stopButton.setMinimumSize(QSize(32, 32))
 
-        self.buttonsLayout.addWidget(self.stopButton)
+        self.gridLayout.addWidget(self.stopButton, 0, 4, 1, 1)
 
-        self.recordButton = QPushButton(self.settingsWidget)
-        self.recordButton.setObjectName(u"recordButton")
+        self.snapshotButton = QPushButton(self.settingsWidget)
+        self.snapshotButton.setObjectName(u"snapshotButton")
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/snapshot.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.snapshotButton.setIcon(icon1)
+        self.snapshotButton.setIconSize(QSize(32, 32))
 
-        self.buttonsLayout.addWidget(self.recordButton)
+        self.gridLayout.addWidget(self.snapshotButton, 2, 0, 1, 1)
+
+        self.startButton = QPushButton(self.settingsWidget)
+        self.startButton.setObjectName(u"startButton")
+        self.startButton.setMinimumSize(QSize(32, 32))
+        self.startButton.setIconSize(QSize(32, 32))
+
+        self.gridLayout.addWidget(self.startButton, 0, 0, 1, 1)
 
         self.stopRecordButton = QPushButton(self.settingsWidget)
         self.stopRecordButton.setObjectName(u"stopRecordButton")
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/stop.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.stopRecordButton.setIcon(icon2)
+        self.stopRecordButton.setIconSize(QSize(32, 32))
 
-        self.buttonsLayout.addWidget(self.stopRecordButton)
+        self.gridLayout.addWidget(self.stopRecordButton, 2, 5, 1, 1)
+
+        self.recordButton = QPushButton(self.settingsWidget)
+        self.recordButton.setObjectName(u"recordButton")
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/record.png", QSize(), QIcon.Mode.Normal, QIcon.State.Off)
+        self.recordButton.setIcon(icon3)
+        self.recordButton.setIconSize(QSize(32, 32))
+
+        self.gridLayout.addWidget(self.recordButton, 2, 4, 1, 1)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Fixed)
+
+        self.gridLayout.addItem(self.verticalSpacer_2, 1, 0, 1, 1)
 
 
-        self.verticalLayout.addLayout(self.buttonsLayout)
+        self.verticalLayout.addLayout(self.gridLayout)
 
 
         self.horizontalLayout.addWidget(self.settingsWidget)
@@ -303,7 +328,7 @@ class Ui_mainWindow(object):
         mainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 1029, 33))
+        self.menuBar.setGeometry(QRect(0, 0, 1029, 22))
         self.menu = QMenu(self.menuBar)
         self.menu.setObjectName(u"menu")
         mainWindow.setMenuBar(self.menuBar)
@@ -340,11 +365,12 @@ class Ui_mainWindow(object):
         self.saveLabel.setText(QCoreApplication.translate("mainWindow", u"\u0421\u043e\u0445\u0440\u0430\u043d\u0438\u0442\u044c \u0432", None))
         self.gainLabel.setText(QCoreApplication.translate("mainWindow", u"\u0423\u0441\u0438\u043b\u0435\u043d\u0438\u0435", None))
         self.gainAuto.setText(QCoreApplication.translate("mainWindow", u"\u0410\u0432\u0442\u043e", None))
-        self.savePath.setText(QCoreApplication.translate("mainWindow", u"...", None))
-        self.startButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u0430\u0440\u0442", None))
+        self.savePath.setText("")
         self.stopButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u043e\u043f", None))
-        self.recordButton.setText(QCoreApplication.translate("mainWindow", u"\u0417\u0430\u043f\u0438\u0441\u044c", None))
-        self.stopRecordButton.setText(QCoreApplication.translate("mainWindow", u"\u041e\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u044c \u0437\u0430\u043f\u0438\u0441\u044c", None))
+        self.snapshotButton.setText("")
+        self.startButton.setText(QCoreApplication.translate("mainWindow", u"\u0421\u0442\u0430\u0440\u0442", None))
+        self.stopRecordButton.setText("")
+        self.recordButton.setText("")
         self.menu.setTitle(QCoreApplication.translate("mainWindow", u"\u0421\u0438\u0441\u0442\u0435\u043c\u0430", None))
     # retranslateUi
 
