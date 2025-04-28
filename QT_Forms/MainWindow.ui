@@ -226,8 +226,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>358</width>
-            <height>235</height>
+            <width>357</width>
+            <height>240</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -425,7 +425,7 @@
      <x>0</x>
      <y>0</y>
      <width>1029</width>
-     <height>33</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
@@ -458,6 +458,8 @@
    </property>
   </action>
  </widget>
- <resources/>
+ <resources>
+  <include location="../view/resources.qrc"/>
+ </resources>
  <connections/>
 </ui>

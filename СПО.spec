@@ -2,6 +2,7 @@
 import sys
 import os
 import glob
+sys.path.extend(r'')
 
 a = Analysis(
     ['main.py'],
@@ -13,7 +14,9 @@ a = Analysis(
             if os.path.isfile(f)
         ],
     ],
-    datas=[('src', 'src'), ('settings', 'settings')],
+    datas=[('src', 'src'),
+    ('settings', 'settings'),
+    ('view/resources.py', 'view/resources.py')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -40,6 +43,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    icon=['view/logo.png']
 )
 coll = COLLECT(
     exe,

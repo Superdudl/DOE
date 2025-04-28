@@ -4,6 +4,8 @@ sys.path.append(__file__)
 from .mainWindowUI import Ui_mainWindow
 from pathlib import Path, PurePath
 from PySide6.QtWidgets import QMainWindow
+from PySide6.QtGui import QPixmap
+from .. import resources
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -14,6 +16,7 @@ class MainWindow(QMainWindow):
         self.find_models()
 
     def setupUI(self):
+        self.setWindowIcon(QPixmap(':/icons/logo.png'))
         self.ui.splitter.setSizes([100,100])
         self.ui.stopRecordButton.setEnabled(False)
 
