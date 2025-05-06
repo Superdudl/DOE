@@ -55,7 +55,6 @@ class MainController(QObject):
         self.video_stream.stop_stream()
         self.video_reader = VideoReader(self.ui, self.window)
         self.video_reader.open(video_path)
-        del self.video_reader
 
 
 
