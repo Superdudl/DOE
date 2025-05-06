@@ -28,6 +28,7 @@ class VideoCapture:
     def stop(self):
         if self.camera is not None:
             self.camera.StopGrabbing()
+            self.camera.Close()
 
     def get_frame(self):
         grabResult = self.camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)

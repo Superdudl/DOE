@@ -32,6 +32,7 @@ class CameraStream(QThread):
             if img is None:
                 continue
             self.frame_grabbed.emit(img)
+        self.cap.stop()
 
 
 class CameraSimulation(QThread):
@@ -46,7 +47,7 @@ class CameraSimulation(QThread):
 
     def run(self, /):
         self.running = True
-        h, w, c = [580, 780, 3]
+        h, w, c = [400, 780, 3]
         while self.running:
             img = np.random.randint(0, 256, (h, w, c), dtype=np.uint8)
             time.sleep(0.033)
@@ -65,13 +66,10 @@ class VideoStream(QObject):
         self.inference_frame = None
         self.status = None
 
-    def start_stream(self, source, filename=None):
+    def start_stream(self, source):
         if self.stream is not None: return
         assert source in self.sources.keys(), f"Выберите из доступных источников {self.sources.keys()}"
-        if source == 'videofile':
-            self.stream = self.sources[source](filename)
-        else:
-            self.stream = self.sources[source]()
+        self.stream = self.sources[source]()
         self.stream.start()  # Move to Thread
         self.stream.wait(500)
         self.status = self.stream.running
