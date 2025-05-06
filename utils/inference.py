@@ -45,6 +45,7 @@ class Inference:
         t1 = time.time()
         input = np.ascontiguousarray(np.float32(input / 255).transpose(2, 0, 1))
         input = input.reshape(1, *input.shape)
+
         cuda.memcpy_htod_async(self.d_input, input, self.stream)
         self.context.execute_async_v3(stream_handle=self.stream.handle)
         self.stream.synchronize()

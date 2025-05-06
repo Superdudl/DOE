@@ -74,7 +74,7 @@ class VideoWriter(QThread):
             self.frame = self.inference(frame)
             self.frame = av.VideoFrame.from_ndarray(self.frame, 'rgb24')
             current_frame = input_video.get(cv2.CAP_PROP_POS_FRAMES)
-            self.next_frame.emit(int(current_frame/total_frames * 100), self.running)
+            self.next_frame.emit(int(current_frame / total_frames * 100), self.running)
 
             if frame is not None:
                 for packet in self.av_stream.encode(self.frame):
@@ -131,6 +131,3 @@ class VideoReader:
     def save_finished(self, output_path):
         self.progress.close()
         QMessageBox.information(self.window, 'Обработка завершена', f'Сохранено в {output_path}')
-
-
-

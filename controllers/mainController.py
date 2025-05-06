@@ -21,7 +21,6 @@ class MainController(QObject):
         self.video_stream = VideoStream(self.ui)
         self.inference_controller = InferenceController(self.ui, self.video_stream)
         self.record_controller = RecordController(self.ui, self.window, self.video_stream)
-        self.video_reader = VideoReader(self.ui, self.window)
 
     def connect_slots(self):
         self.ui.connect_camera.triggered.connect(self.connect_camera)
@@ -54,7 +53,9 @@ class MainController(QObject):
         if len(video_path) == 0: return
         self.inference_controller.stop()
         self.video_stream.stop_stream()
+        self.video_reader = VideoReader(self.ui, self.window)
         self.video_reader.open(video_path)
+        del self.video_reader
 
 
 

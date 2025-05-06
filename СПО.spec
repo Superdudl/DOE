@@ -43,7 +43,7 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['view/logo.ico']
+    icon=['view\\logo.ico']
 )
 coll = COLLECT(
     exe,
