@@ -11,7 +11,7 @@ import numpy as np
 
 
 class Predict(QThread):
-    inference_complete = Signal(np.uint8, np.uint8)
+    inference_complete = Signal(np.uint8, np.uint8, np.float32)
 
     def __init__(self, controller, stream):
         super().__init__()
@@ -26,8 +26,8 @@ class Predict(QThread):
         while not self.isInterruptionRequested() and self.stream.status:
             frame = np.copy(self.stream.frame)
             # frame = cv2.resize(frame, (780, 580), interpolation=cv2.INTER_LANCZOS4)
-            result = self.inference(frame)
-            self.inference_complete.emit(result, frame)
+            result, latency = self.inference(frame)
+            self.inference_complete.emit(result, frame, latency)
         self.inference.clear()
 
 
@@ -87,6 +87,7 @@ class InferenceController(QObject):
         self.ui.inferenceLabel.setPixmap(pixmap)
 
     @Slot()
-    def calculate_psnr(self, result, frame):
-        self.ui.psnrLabel.setText(f'PSNR = {psnr(result, frame):.2f}')
+    def calculate_psnr(self, result, frame, latency):
+        self.ui.psnrLabel.setText(f'PSNR = {psnr(result, frame):.2f}\n'
+                                  f'FPS = {1/latency:.1f} Гц')
 

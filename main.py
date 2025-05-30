@@ -6,7 +6,7 @@ from PySide6.QtCore import QSettings
 from view.MainWindow import MainWindow
 from pathlib import Path, PurePath
 
-DEBUG = False
+DEBUG = True
 
 def main():
     path = Path(PurePath(__file__).parent) / 'settings' / 'settings.ini'
