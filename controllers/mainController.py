@@ -40,7 +40,7 @@ class MainController(QObject):
             return
         self.ui.exposureEdit.setEnabled(True)
         self.ui.gainEdit.setEnabled(True)
-        self.ui.formatEdit.setEnabled(True)
+        self.ui.formatComboBox.setEnabled(True)
         self.ui.exposureAuto.setEnabled(True)
         self.ui.gainAuto.setEnabled(True)
         if not DEBUG :
