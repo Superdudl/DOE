@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.8.3
+## Created by: Qt User Interface Compiler version 6.9.0
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -38,6 +38,8 @@ class Ui_mainWindow(object):
         self.load_video = QAction(mainWindow)
         self.load_video.setObjectName(u"load_video")
         self.load_video.setCheckable(False)
+        self.actionPSNR_SSIM = QAction(mainWindow)
+        self.actionPSNR_SSIM.setObjectName(u"actionPSNR_SSIM")
         self.centralwidget = QWidget(mainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         sizePolicy.setHeightForWidth(self.centralwidget.sizePolicy().hasHeightForWidth())
@@ -123,13 +125,13 @@ class Ui_mainWindow(object):
 
         self.verticalLayout_6.addItem(self.verticalSpacer)
 
-        self.psnrLabel = QLabel(self.videoCaptureWidget)
-        self.psnrLabel.setObjectName(u"psnrLabel")
+        self.infoLabel = QLabel(self.videoCaptureWidget)
+        self.infoLabel.setObjectName(u"infoLabel")
         font = QFont()
         font.setPointSize(28)
-        self.psnrLabel.setFont(font)
+        self.infoLabel.setFont(font)
 
-        self.verticalLayout_6.addWidget(self.psnrLabel)
+        self.verticalLayout_6.addWidget(self.infoLabel)
 
         self.verticalLayout_6.setStretch(0, 10)
         self.verticalLayout_6.setStretch(1, 3)
@@ -159,7 +161,7 @@ class Ui_mainWindow(object):
         self.settingsScrollArea.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.settingsScrollAreaContents = QWidget()
         self.settingsScrollAreaContents.setObjectName(u"settingsScrollAreaContents")
-        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 321, 230))
+        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 318, 236))
         self.verticalLayout_2 = QVBoxLayout(self.settingsScrollAreaContents)
         self.verticalLayout_2.setSpacing(10)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -327,17 +329,21 @@ class Ui_mainWindow(object):
         mainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 1029, 33))
+        self.menuBar.setGeometry(QRect(0, 0, 1029, 22))
         self.menu = QMenu(self.menuBar)
         self.menu.setObjectName(u"menu")
+        self.analise = QMenu(self.menuBar)
+        self.analise.setObjectName(u"analise")
         mainWindow.setMenuBar(self.menuBar)
         self.statusBar = QStatusBar(mainWindow)
         self.statusBar.setObjectName(u"statusBar")
         mainWindow.setStatusBar(self.statusBar)
 
         self.menuBar.addAction(self.menu.menuAction())
+        self.menuBar.addAction(self.analise.menuAction())
         self.menu.addAction(self.connect_camera)
         self.menu.addAction(self.load_video)
+        self.analise.addAction(self.actionPSNR_SSIM)
 
         self.retranslateUi(mainWindow)
 
@@ -351,11 +357,12 @@ class Ui_mainWindow(object):
         self.connect_camera.setShortcut(QCoreApplication.translate("mainWindow", u"F3", None))
 #endif // QT_CONFIG(shortcut)
         self.load_video.setText(QCoreApplication.translate("mainWindow", u"\u0417\u0430\u0433\u0440\u0443\u0437\u0438\u0442\u044c \u0432\u0438\u0434\u0435\u043e", None))
+        self.actionPSNR_SSIM.setText(QCoreApplication.translate("mainWindow", u"PSNR \u0438 SSIM", None))
         self.label.setText(QCoreApplication.translate("mainWindow", u"\u041a\u0430\u043c\u0435\u0440\u0430", None))
         self.videoCaptureLabel.setText("")
         self.label_2.setText(QCoreApplication.translate("mainWindow", u"\u041f\u043e\u0441\u0442\u043e\u0431\u0440\u0430\u0431\u043e\u0442\u043a\u0430", None))
         self.inferenceLabel.setText("")
-        self.psnrLabel.setText("")
+        self.infoLabel.setText("")
         self.formatLabel.setText(QCoreApplication.translate("mainWindow", u"\u0424\u043e\u0440\u043c\u0430\u0442", None))
         self.saveEdit.setPlaceholderText("")
         self.modelLabel.setText(QCoreApplication.translate("mainWindow", u"\u041c\u043e\u0434\u0435\u043b\u044c", None))
@@ -371,5 +378,6 @@ class Ui_mainWindow(object):
         self.stopRecordButton.setText("")
         self.recordButton.setText("")
         self.menu.setTitle(QCoreApplication.translate("mainWindow", u"\u0421\u0438\u0441\u0442\u0435\u043c\u0430", None))
+        self.analise.setTitle(QCoreApplication.translate("mainWindow", u"\u0410\u043d\u0430\u043b\u0438\u0437", None))
     # retranslateUi
 

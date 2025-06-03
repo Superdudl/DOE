@@ -4,7 +4,8 @@ sys.path.append(__file__)
 
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtWidgets import QMessageBox, QFileDialog
-from controllers import CameraController, InferenceController, RecordController, VideoReader
+from view.MetricsDialog import MetricsDialog
+from controllers import CameraController, InferenceController, RecordController, VideoReader, AnalyseController
 from utils import VideoStream
 from utils import DEBUG
 
@@ -25,6 +26,7 @@ class MainController(QObject):
     def connect_slots(self):
         self.ui.connect_camera.triggered.connect(self.connect_camera)
         self.ui.load_video.triggered.connect(self.open_video)
+        self.ui.analise.triggered.connect(self.open_analise_dialog)
 
     def __del__(self):
         self.video_stream.stop_stream()
@@ -56,6 +58,13 @@ class MainController(QObject):
         self.video_reader = VideoReader(self.ui, self.window)
         self.video_reader.open(video_path)
 
+    @Slot()
+    def open_analise_dialog(self):
+        self.inference_controller.stop()
+        self.video_stream.stop_stream()
+        dialog_window = MetricsDialog(self.window)
+        analyse_controller = AnalyseController(dialog_window)
+        dialog_window.exec()
 
 
 

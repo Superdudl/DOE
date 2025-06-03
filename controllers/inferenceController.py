@@ -4,7 +4,6 @@ from pathlib import PurePath, Path
 sys.path.append(__file__)
 from utils import Inference
 import cv2
-from utils.metrics import psnr
 from PySide6.QtCore import QThread, Signal, QObject, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
 import numpy as np
@@ -88,6 +87,5 @@ class InferenceController(QObject):
 
     @Slot()
     def calculate_psnr(self, result, frame, latency):
-        self.ui.psnrLabel.setText(f'PSNR = {psnr(result, frame):.2f}\n'
-                                  f'FPS = {1/latency:.1f} Гц')
+        self.ui.infoLabel.setText(f'FPS = {1/latency:.1f} Гц')
 
