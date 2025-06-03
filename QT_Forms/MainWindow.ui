@@ -220,8 +220,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>319</width>
-            <height>236</height>
+            <width>321</width>
+            <height>230</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -316,13 +316,6 @@
                </property>
               </widget>
              </item>
-             <item row="4" column="1">
-              <widget class="QLineEdit" name="formatEdit">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
              <item row="5" column="0" colspan="3">
               <widget class="Line" name="line_3">
                <property name="orientation">
@@ -370,6 +363,9 @@
                  <normaloff>:/icons/search.png</normaloff>:/icons/search.png</iconset>
                </property>
               </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QComboBox" name="formatComboBox"/>
              </item>
             </layout>
            </item>
@@ -494,7 +490,7 @@
      <x>0</x>
      <y>0</y>
      <width>1029</width>
-     <height>22</height>
+     <height>33</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

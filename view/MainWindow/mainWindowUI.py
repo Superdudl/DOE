@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.0
+## Created by: Qt User Interface Compiler version 6.8.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -159,7 +159,7 @@ class Ui_mainWindow(object):
         self.settingsScrollArea.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.settingsScrollAreaContents = QWidget()
         self.settingsScrollAreaContents.setObjectName(u"settingsScrollAreaContents")
-        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 319, 236))
+        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 321, 230))
         self.verticalLayout_2 = QVBoxLayout(self.settingsScrollAreaContents)
         self.verticalLayout_2.setSpacing(10)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -221,12 +221,6 @@ class Ui_mainWindow(object):
 
         self.settingsGridLayout.addWidget(self.saveLabel, 6, 0, 1, 1)
 
-        self.formatEdit = QLineEdit(self.settingsScrollAreaContents)
-        self.formatEdit.setObjectName(u"formatEdit")
-        self.formatEdit.setEnabled(False)
-
-        self.settingsGridLayout.addWidget(self.formatEdit, 4, 1, 1, 1)
-
         self.line_3 = QFrame(self.settingsScrollAreaContents)
         self.line_3.setObjectName(u"line_3")
         self.line_3.setFrameShape(QFrame.Shape.HLine)
@@ -259,6 +253,11 @@ class Ui_mainWindow(object):
         self.savePath.setIcon(icon)
 
         self.settingsGridLayout.addWidget(self.savePath, 6, 2, 1, 1)
+
+        self.formatComboBox = QComboBox(self.settingsScrollAreaContents)
+        self.formatComboBox.setObjectName(u"formatComboBox")
+
+        self.settingsGridLayout.addWidget(self.formatComboBox, 4, 1, 1, 1)
 
         self.settingsGridLayout.setColumnStretch(0, 1)
         self.settingsGridLayout.setColumnStretch(1, 4)
@@ -328,7 +327,7 @@ class Ui_mainWindow(object):
         mainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 1029, 22))
+        self.menuBar.setGeometry(QRect(0, 0, 1029, 33))
         self.menu = QMenu(self.menuBar)
         self.menu.setObjectName(u"menu")
         mainWindow.setMenuBar(self.menuBar)

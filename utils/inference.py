@@ -52,8 +52,9 @@ class Inference:
         cuda.memcpy_dtoh_async(self.output, self.d_output, self.stream)
         self.stream.synchronize()
         result = np.clip(self.output[0].transpose(1, 2, 0) * 255, 0, 255).astype(np.uint8)
+        latency = time.time() - t1
         print(f' FPS: {1/(time.time() - t1):.2f}')
-        return np.ascontiguousarray(result)
+        return np.ascontiguousarray(result), latency
 
     def clear(self):
         del self.context

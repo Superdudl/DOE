@@ -71,7 +71,7 @@ class VideoWriter(QThread):
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             if self.container is None:
                 self.create_container(fps)
-            self.frame = self.inference(frame)
+            self.frame, _ = self.inference(frame)
             self.frame = av.VideoFrame.from_ndarray(self.frame, 'rgb24')
             current_frame = input_video.get(cv2.CAP_PROP_POS_FRAMES)
             self.next_frame.emit(int(current_frame / total_frames * 100), self.running)

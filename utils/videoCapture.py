@@ -4,6 +4,7 @@ sys.path.append(__file__)
 from pypylon import pylon
 from pypylon import _genicam
 import cv2
+import numpy as np
 
 
 class VideoCapture:
@@ -13,6 +14,7 @@ class VideoCapture:
         try:
             self.camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateDevice(di))
             self.camera.Open()
+            self.camera.PixelFormat.Value = 'BayerBG8' # 'YUV422Packed'
         except _genicam.RuntimeException as e:
             print("Камера не подключена\n")
             self.camera = None
@@ -32,11 +34,14 @@ class VideoCapture:
 
     def get_frame(self):
         grabResult = self.camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
-        if grabResult.GrabSucceeded():
-            # Access the image data
-            image = self.converter.Convert(grabResult)
-            self.frame = image.GetArray()
-        grabResult.Release()
+        try:
+            if grabResult.GrabSucceeded():
+                # Access the image data
+                image = self.converter.Convert(grabResult)
+                self.frame = image.GetArray()
+            grabResult.Release()
+        except _genicam.RuntimeException as e:
+            self.frame = np.zeros((self.camera.Height.Value, self.camera.Width.Value, 3), dtype=np.uint8)
         return self.frame
 
 

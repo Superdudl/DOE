@@ -5,6 +5,7 @@ sys.path.append(__file__)
 import numpy as np
 from PySide6.QtCore import QObject, Slot
 from PySide6.QtGui import QRegularExpressionValidator
+from pypylon import pylon
 
 
 class CameraController(QObject):
@@ -21,6 +22,16 @@ class CameraController(QObject):
         self.ui.gainEdit.setValidator(validator)
         self.ui.exposureEdit.setValidator(validator)
 
+        # Format UI
+        self.format_index = {'BayerBG8': 0,
+                             'YUV422Packed': 1}
+        self.ui.formatComboBox.addItem("")
+        self.ui.formatComboBox.setItemText(0, "BayerBG8")
+        self.ui.formatComboBox.addItem("")
+        self.ui.formatComboBox.setItemText(1, "YUV422Packed")
+        format = self.camera.PixelFormat.Value
+        self.ui.formatComboBox.setCurrentIndex(self.format_index[f'{format}'])
+
         # Exposure UI
         if self.camera.ExposureAuto.Value == "Continuous":
             self.ui.exposureAuto.setChecked(True)
@@ -36,12 +47,18 @@ class CameraController(QObject):
         else:
             self.ui.gainEdit.setText(str(int(self.camera.GainRaw.Value)))
 
-
     def connect_slots(self):
         self.ui.gainEdit.editingFinished.connect(self.setGain)
         self.ui.exposureEdit.editingFinished.connect(self.setExposure)
         self.ui.exposureAuto.clicked.connect(self.setExposureAuto)
         self.ui.gainAuto.clicked.connect(self.setGainAuto)
+        self.ui.formatComboBox.activated.connect(self.setFormat)
+
+    @Slot()
+    def setFormat(self):
+        self.camera.StopGrabbing()
+        self.camera.PixelFormat.Value = self.ui.formatComboBox.currentText()
+        self.camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
     @Slot()
     def setGain(self):
@@ -76,4 +93,3 @@ class CameraController(QObject):
             self.camera.ExposureAuto.Value = "Off"
             self.ui.exposureEdit.setEnabled(True)
             self.ui.exposureEdit.setText(str(int(self.camera.ExposureTimeAbs.Value)))
-
