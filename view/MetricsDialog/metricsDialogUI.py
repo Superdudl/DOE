@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'metricsDialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.0
+## Created by: Qt User Interface Compiler version 6.8.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -15,10 +15,10 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QDialog, QFrame, QGridLayout,
-    QHBoxLayout, QLabel, QLayout, QLineEdit,
-    QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QFrame,
+    QGridLayout, QHBoxLayout, QLabel, QLayout,
+    QLineEdit, QPushButton, QSizePolicy, QSpacerItem,
+    QVBoxLayout, QWidget)
 
 class Ui_Dialog(object):
     def setupUi(self, Dialog):
@@ -116,18 +116,6 @@ class Ui_Dialog(object):
         self.widget.setObjectName(u"widget")
         self.gridLayout = QGridLayout(self.widget)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.gridLayout.addItem(self.horizontalSpacer_3, 0, 5, 1, 1)
-
-        self.ssimLabel = QLabel(self.widget)
-        self.ssimLabel.setObjectName(u"ssimLabel")
-        font = QFont()
-        font.setPointSize(22)
-        self.ssimLabel.setFont(font)
-
-        self.gridLayout.addWidget(self.ssimLabel, 1, 1, 1, 1)
-
         self.psnrLineEdit = QLineEdit(self.widget)
         self.psnrLineEdit.setObjectName(u"psnrLineEdit")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
@@ -136,15 +124,21 @@ class Ui_Dialog(object):
         sizePolicy1.setHeightForWidth(self.psnrLineEdit.sizePolicy().hasHeightForWidth())
         self.psnrLineEdit.setSizePolicy(sizePolicy1)
         self.psnrLineEdit.setMinimumSize(QSize(0, 28))
+        font = QFont()
+        font.setPointSize(22)
         self.psnrLineEdit.setFont(font)
         self.psnrLineEdit.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.psnrLineEdit.setReadOnly(True)
 
-        self.gridLayout.addWidget(self.psnrLineEdit, 0, 3, 1, 1)
+        self.gridLayout.addWidget(self.psnrLineEdit, 1, 3, 1, 1)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.psnrLabel = QLabel(self.widget)
+        self.psnrLabel.setObjectName(u"psnrLabel")
+        self.psnrLabel.setFont(font)
+        self.psnrLabel.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.psnrLabel.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
-        self.gridLayout.addItem(self.horizontalSpacer, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.psnrLabel, 1, 1, 1, 1)
 
         self.ssimLineEdit = QLineEdit(self.widget)
         self.ssimLineEdit.setObjectName(u"ssimLineEdit")
@@ -155,17 +149,46 @@ class Ui_Dialog(object):
         self.ssimLineEdit.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.ssimLineEdit.setReadOnly(True)
 
-        self.gridLayout.addWidget(self.ssimLineEdit, 1, 3, 1, 1)
+        self.gridLayout.addWidget(self.ssimLineEdit, 2, 3, 1, 1)
 
-        self.psnrLabel = QLabel(self.widget)
-        self.psnrLabel.setObjectName(u"psnrLabel")
-        self.psnrLabel.setFont(font)
+        self.ssimLabel = QLabel(self.widget)
+        self.ssimLabel.setObjectName(u"ssimLabel")
+        self.ssimLabel.setFont(font)
+        self.ssimLabel.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.ssimLabel.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
-        self.gridLayout.addWidget(self.psnrLabel, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.ssimLabel, 2, 1, 1, 1)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer_3, 1, 5, 1, 1)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer, 1, 0, 1, 1)
 
         self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout.addItem(self.horizontalSpacer_2, 0, 2, 1, 1)
+        self.gridLayout.addItem(self.horizontalSpacer_2, 1, 2, 1, 1)
+
+        self.comboBox = QComboBox(self.widget)
+        self.comboBox.setObjectName(u"comboBox")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Policy.MinimumExpanding, QSizePolicy.Policy.Fixed)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(self.comboBox.sizePolicy().hasHeightForWidth())
+        self.comboBox.setSizePolicy(sizePolicy2)
+        self.comboBox.setFont(font)
+
+        self.gridLayout.addWidget(self.comboBox, 0, 3, 1, 2)
+
+        self.label = QLabel(self.widget)
+        self.label.setObjectName(u"label")
+        self.label.setFont(font)
+        self.label.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
 
 
         self.verticalLayout.addWidget(self.widget)
@@ -189,7 +212,8 @@ class Ui_Dialog(object):
         self.blurredButton.setText(QCoreApplication.translate("Dialog", u"\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0438\u0441\u043a\u0430\u0436\u0435\u043d\u043d\u043e\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", None))
         self.analyseLabel.setText("")
         self.analyseButton.setText(QCoreApplication.translate("Dialog", u"\u0410\u043d\u0430\u043b\u0438\u0437", None))
-        self.ssimLabel.setText(QCoreApplication.translate("Dialog", u"SSIM", None))
         self.psnrLabel.setText(QCoreApplication.translate("Dialog", u"PSNR", None))
+        self.ssimLabel.setText(QCoreApplication.translate("Dialog", u"SSIM", None))
+        self.label.setText(QCoreApplication.translate("Dialog", u"\u041c\u043e\u0434\u0435\u043b\u044c", None))
     # retranslateUi
 

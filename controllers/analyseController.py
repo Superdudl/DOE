@@ -19,7 +19,8 @@ class AnalyseController:
 
     def __init__(self, window):
         self.ui = window.ui
-        model_text = window.parent().ui.modelComboBox.currentText()
+        self.parent_ui = window.parent().ui
+        model_text = self.parent_ui.modelComboBox.currentText()
         if len(model_text) > 0:
             self.model = self.models_dir / model_text
         else:
@@ -28,12 +29,28 @@ class AnalyseController:
         self.original_image = None
         self.blurred_image = None
         self.result_image = None
+
+        self.setup_ui()
         self.connect_slots()
+
+    def setup_ui(self):
+        self.ui.comboBox.addItems(
+            [self.parent_ui.modelComboBox.itemText(i) for i in range(self.parent_ui.modelComboBox.count())])
+        self.ui.comboBox.setCurrentIndex(self.parent_ui.modelComboBox.currentIndex())
 
     def connect_slots(self):
         self.ui.originalButton.clicked.connect(self.open_original_image)
         self.ui.blurredButton.clicked.connect(self.open_blurred_image)
         self.ui.analyseButton.clicked.connect(self.analyse)
+        self.ui.comboBox.activated.connect(self.update_model)
+
+    @Slot()
+    def update_model(self):
+        model_text = self.ui.comboBox.currentText()
+        if len(model_text) > 0:
+            self.model = self.models_dir / model_text
+        else:
+            self.model = None
 
     @Slot()
     def open_original_image(self):
