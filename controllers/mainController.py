@@ -3,6 +3,7 @@ import sys
 sys.path.append(__file__)
 
 from PySide6.QtCore import QObject, Slot
+from PySide6.QtGui import QPixmap
 from PySide6.QtWidgets import QMessageBox, QFileDialog
 from view.MetricsDialog import MetricsDialog
 from controllers import CameraController, InferenceController, RecordController, VideoReader, AnalyseController
@@ -63,6 +64,8 @@ class MainController(QObject):
         self.inference_controller.stop()
         self.video_stream.stop_stream()
         dialog_window = MetricsDialog(self.window)
+        dialog_window.setWindowTitle('Анализ качества восстановления')
+        dialog_window.setWindowIcon(QPixmap(':/icons/logo.png'))
         analyse_controller = AnalyseController(dialog_window)
         dialog_window.exec()
 

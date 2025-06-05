@@ -38,7 +38,7 @@ class AnalyseController:
     @Slot()
     def open_original_image(self):
         filters = "Изображение (*.bmp *.jpg *.jpeg *.png)"
-        image_path, _ = QFileDialog.getOpenFileName(None, "Выберите видео", '', filters)
+        image_path, _ = QFileDialog.getOpenFileName(None, "Выберите оригинальное изображение", '', filters)
         if len(image_path) == 0: return
         self.original_image = cv2.imread(Path(image_path), cv2.IMREAD_COLOR_RGB)
         h, w, c = self.original_image.shape
@@ -50,7 +50,7 @@ class AnalyseController:
     @Slot()
     def open_blurred_image(self):
         filters = "Изображение (*.bmp *.jpg *.jpeg *.png)"
-        image_path, _ = QFileDialog.getOpenFileName(None, "Выберите видео", '', filters)
+        image_path, _ = QFileDialog.getOpenFileName(None, "Выберите искаженное изображение", '', filters)
         if len(image_path) == 0: return
         self.blurred_image = cv2.imread(Path(image_path), cv2.IMREAD_COLOR_RGB)
         h, w, c = self.blurred_image.shape
