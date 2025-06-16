@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'MainWindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.9.0
+## Created by: Qt User Interface Compiler version 6.8.3
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -83,7 +83,7 @@ class Ui_mainWindow(object):
         self.videoCaptureLabel.setSizePolicy(sizePolicy3)
         self.videoCaptureLabel.setMinimumSize(QSize(78, 68))
         self.videoCaptureLabel.setSizeIncrement(QSize(0, 0))
-        self.videoCaptureLabel.setFrameShape(QFrame.Shape.Box)
+        self.videoCaptureLabel.setFrameShape(QFrame.Shape.StyledPanel)
         self.videoCaptureLabel.setFrameShadow(QFrame.Shadow.Sunken)
         self.videoCaptureLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
 
@@ -110,7 +110,7 @@ class Ui_mainWindow(object):
         self.inferenceLabel.setMinimumSize(QSize(78, 68))
         self.inferenceLabel.setBaseSize(QSize(0, 0))
         self.inferenceLabel.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.inferenceLabel.setFrameShape(QFrame.Shape.Box)
+        self.inferenceLabel.setFrameShape(QFrame.Shape.StyledPanel)
         self.inferenceLabel.setFrameShadow(QFrame.Shadow.Sunken)
         self.inferenceLabel.setScaledContents(False)
         self.inferenceLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
@@ -161,7 +161,7 @@ class Ui_mainWindow(object):
         self.settingsScrollArea.setAlignment(Qt.AlignmentFlag.AlignLeading|Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop)
         self.settingsScrollAreaContents = QWidget()
         self.settingsScrollAreaContents.setObjectName(u"settingsScrollAreaContents")
-        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 318, 236))
+        self.settingsScrollAreaContents.setGeometry(QRect(0, 0, 321, 230))
         self.verticalLayout_2 = QVBoxLayout(self.settingsScrollAreaContents)
         self.verticalLayout_2.setSpacing(10)
         self.verticalLayout_2.setObjectName(u"verticalLayout_2")
@@ -329,7 +329,7 @@ class Ui_mainWindow(object):
         mainWindow.setCentralWidget(self.centralwidget)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 1029, 22))
+        self.menuBar.setGeometry(QRect(0, 0, 1029, 33))
         self.menu = QMenu(self.menuBar)
         self.menu.setObjectName(u"menu")
         self.analise = QMenu(self.menuBar)

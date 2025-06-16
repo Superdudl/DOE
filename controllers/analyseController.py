@@ -85,6 +85,12 @@ class AnalyseController:
         inference = Inference()
         inference.create(self.model, self.blurred_image.shape)
         self.result_image, _ = inference(self.blurred_image)
+
+        #--------------------------------------------------------------------------------------------------------------
+        # from utils.Classical_Correction import restore_image
+        # self.result_image = restore_image(self.blurred_image)
+        #--------------------------------------------------------------------------------------------------------------
+
         inference.clear()
         h, w, c = self.blurred_image.shape
         qimage = QImage(self.result_image, w, h, w * c, QImage.Format.Format_RGB888)
@@ -102,3 +108,4 @@ class AnalyseController:
 
         self.ui.psnrLineEdit.setText(f'{psnr_metric:.2f}')
         self.ui.ssimLineEdit.setText(f'{ssim_metric:.2f}')
+

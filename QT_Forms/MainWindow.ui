@@ -80,7 +80,7 @@
               </size>
              </property>
              <property name="frameShape">
-              <enum>QFrame::Shape::Box</enum>
+              <enum>QFrame::Shape::StyledPanel</enum>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Shadow::Sunken</enum>
@@ -137,7 +137,7 @@
               <enum>Qt::LayoutDirection::LeftToRight</enum>
              </property>
              <property name="frameShape">
-              <enum>QFrame::Shape::Box</enum>
+              <enum>QFrame::Shape::StyledPanel</enum>
              </property>
              <property name="frameShadow">
               <enum>QFrame::Shadow::Sunken</enum>
@@ -220,8 +220,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>318</width>
-            <height>236</height>
+            <width>321</width>
+            <height>230</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -490,7 +490,7 @@
      <x>0</x>
      <y>0</y>
      <width>1029</width>
-     <height>22</height>
+     <height>33</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">
