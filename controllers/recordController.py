@@ -21,6 +21,8 @@ class Encoder(QThread):
         self.video_stream = video_stream
         self.container = None
         self.filename = filename
+        settings_path = str(Path(PurePath(__file__).parents[1], 'settings', 'settings.ini'))
+        self.settings = QSettings(settings_path, QSettings.Format.IniFormat)
 
         path = Path(path)
         self.path = path / filename
@@ -34,7 +36,27 @@ class Encoder(QThread):
         import pycuda.driver as cuda
         import pycuda.autoinit
 
-        codec = 'h264_nvenc' if cuda.Device.count() > 0 and self.video_stream.inference_frame is None else 'libopenh264'
+        codec = self.settings.value('record/codec', type=str)
+
+        if codec == 'H.264':
+            if cuda.Device.count() > 0:
+                codec = 'h264_nvenc'
+            else:
+                codec = 'h264'
+
+        elif codec == 'H.265':
+            if cuda.Device.count() > 0:
+                codec = 'hevc_nvec'
+            else:
+                codec = 'hevc'
+
+        elif codec == 'MJPEG':
+            codec = 'mpeg1video'
+
+        elif codec == 'MPEG-4':
+            codec = 'mpeg4'
+
+        if self.video_stream.inference_frame is not None: codec = 'libopenh264'
 
         framerate = 30
         if self.video_stream.status and self.video_stream.frame is not None:
@@ -118,6 +140,7 @@ class RecordController:
         self.ui.recordButton.clicked.connect(self.start_record)
         self.ui.stopRecordButton.clicked.connect(self.stop_record)
         self.ui.snapshotButton.clicked.connect(self.snapshot)
+        self.ui.codecGroupBox.activated.connect(self.update_codec)
 
     def setup_ui(self):
         # Инициализация пути записи видео
@@ -125,6 +148,11 @@ class RecordController:
         self.settings = QSettings(settings_path, QSettings.Format.IniFormat)
         self.record_path = Path(self.settings.value('record/path'))
         self.ui.saveEdit.setText(str(self.record_path))
+
+    @Slot()
+    def update_codec(self):
+        codec = self.ui.codecGroupBox.currentText()
+        self.settings.setValue('record/codec', codec)
 
     @Slot()
     def explore_path(self):
@@ -180,6 +208,7 @@ class RecordController:
         if len(image_path) < 1: return
         frame = frame if infer_frame is None else cv2.hconcat([frame, infer_frame])
         Image.fromarray(frame).save(Path(image_path))
+
 
 if __name__ == '__main__':
     pass
