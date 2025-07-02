@@ -57,6 +57,10 @@ class CameraController(QObject):
 
     def __del__(self):
         try:
+            self.ui.exposureAuto.setEnabled(False)
+            self.ui.exposureEdit.setEnabled(False)
+            self.ui.gainEdit.setEnabled(False)
+            self.ui.gainAuto.setEnabled(False)
             self.ui.formatComboBox.clear()
         except RuntimeError as e:
             return
