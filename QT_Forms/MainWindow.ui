@@ -220,7 +220,7 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>301</width>
+            <width>318</width>
             <height>243</height>
            </rect>
           </property>
@@ -516,8 +516,19 @@
     </property>
     <addaction name="actionPSNR_SSIM"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Справка</string>
+    </property>
+    <addaction name="action"/>
+    <addaction name="action_2"/>
+    <addaction name="action_3"/>
+    <addaction name="action_4"/>
+    <addaction name="action_5"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="analise"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="connect_camera">
@@ -542,6 +553,31 @@
   <action name="actionPSNR_SSIM">
    <property name="text">
     <string>PSNR и SSIM</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Спецификация</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Текст программы</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>Описание программы</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>Руководство оператора</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>Руководство системного программиста</string>
    </property>
   </action>
  </widget>
