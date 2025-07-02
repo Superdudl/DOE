@@ -1,4 +1,5 @@
 import sys
+import time
 
 sys.path.append(__file__)
 
@@ -53,6 +54,10 @@ class CameraController(QObject):
         self.ui.exposureAuto.clicked.connect(self.setExposureAuto)
         self.ui.gainAuto.clicked.connect(self.setGainAuto)
         self.ui.formatComboBox.activated.connect(self.setFormat)
+
+    def __del__(self):
+        if self.ui.formatComboBox.count() > 0:
+            self.ui.formatComboBox.clear()
 
     @Slot()
     def setFormat(self):

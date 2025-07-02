@@ -21,6 +21,7 @@ class MainController(QObject):
         self.connect_slots()
 
     def setup_controllers(self):
+        self.camera_controller = None
         self.video_stream = VideoStream(self.ui)
         self.inference_controller = InferenceController(self.ui, self.video_stream)
         self.record_controller = RecordController(self.ui, self.window, self.video_stream)
@@ -64,7 +65,7 @@ class MainController(QObject):
         self.ui.formatComboBox.setEnabled(True)
         self.ui.exposureAuto.setEnabled(True)
         self.ui.gainAuto.setEnabled(True)
-        if not DEBUG :
+        if not DEBUG and self.camera_controller is None:
             self.camera_controller = CameraController(self.video_stream.stream, self.ui)
 
     @Slot()
@@ -74,6 +75,8 @@ class MainController(QObject):
         if len(video_path) == 0: return
         self.inference_controller.stop()
         self.video_stream.stop_stream()
+        del self.camera_controller
+        self.camera_controller = None
         self.video_reader = VideoReader(self.ui, self.window)
         self.video_reader.open(video_path)
 
@@ -81,6 +84,8 @@ class MainController(QObject):
     def open_analise_dialog(self):
         self.inference_controller.stop()
         self.video_stream.stop_stream()
+        del self.camera_controller
+        self.camera_controller = None
         dialog_window = MetricsDialog(self.window)
         dialog_window.setWindowTitle('Анализ качества восстановления')
         dialog_window.setWindowIcon(QPixmap(':/icons/logo.png'))
