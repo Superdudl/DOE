@@ -173,13 +173,12 @@ class RecordController:
 
     @Slot()
     def start_record(self):
-        if self.video_stream.frame is None:
+        if self.video_stream.frame is None or not self.video_stream.status:
             return
 
         filename = f'{datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S")}'
-        if self.video_stream.frame is not None:
-            self.camera_encoder = Encoder(self.record_path, self.video_stream, filename)
-            self.camera_encoder.start()
+        self.camera_encoder = Encoder(self.record_path, self.video_stream, filename)
+        self.camera_encoder.start()
 
         self.ui.startButton.setEnabled(False)
         self.ui.stopButton.setEnabled(False)
