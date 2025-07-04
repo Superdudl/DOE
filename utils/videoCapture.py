@@ -38,7 +38,7 @@ class VideoCapture:
             self.camera.Close()
 
     def get_frame(self):
-        grabResult = self.camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+        grabResult = self.camera.RetrieveResult(11000, pylon.TimeoutHandling_ThrowException)
         try:
             if grabResult.GrabSucceeded():
                 # Access the image data

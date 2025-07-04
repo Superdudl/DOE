@@ -31,6 +31,10 @@ class MainController(QObject):
         self.ui.load_video.triggered.connect(self.open_video)
         self.ui.analise.triggered.connect(self.open_analise_dialog)
         self.ui.action.triggered.connect(self.open_reference)
+        self.ui.action_2.triggered.connect(self.open_reference)
+        self.ui.action_3.triggered.connect(self.open_reference)
+        self.ui.action_4.triggered.connect(self.open_reference)
+        self.ui.action_5.triggered.connect(self.open_reference)
 
     def __del__(self):
         self.video_stream.stop_stream()
