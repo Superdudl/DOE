@@ -8,7 +8,6 @@ from PySide6.QtCore import Slot, QSettings, QThread
 from PySide6.QtWidgets import QFileDialog
 from pathlib import Path, PurePath
 import av
-from PIL import Image
 import cv2
 from fractions import Fraction
 from datetime import datetime
@@ -213,8 +212,10 @@ class RecordController:
         filters = " BMP (*.bmp);;JPEG (*.jpeg);;PNG (*.png)"
         image_path, extension = QFileDialog.getSaveFileName(None, 'Сохранить как', '', filter=filters)
         if len(image_path) < 1: return
+        image_path = Path(image_path)
         frame = frame if infer_frame is None else cv2.hconcat([frame, infer_frame])
-        Image.fromarray(frame).save(Path(image_path))
+        ret, buffer = cv2.imencode(image_path.suffix, frame)
+        buffer.tofile(image_path)
 
 
 if __name__ == '__main__':
