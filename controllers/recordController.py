@@ -4,8 +4,8 @@ import numpy as np
 
 sys.path.append(__file__)
 
-from PySide6.QtCore import Slot, QSettings, QThread
-from PySide6.QtWidgets import QFileDialog
+from PySide6.QtCore import Slot, QSettings, QThread, Signal
+from PySide6.QtWidgets import QFileDialog, QMessageBox
 from pathlib import Path, PurePath
 import av
 import cv2
@@ -15,10 +15,12 @@ import time
 
 
 class Encoder(QThread):
-    def __init__(self, path, video_stream, filename):
+    rec_warning = Signal(str)
+    def __init__(self, path, video_stream, filename, ui):
         super().__init__()
         self.video_stream = video_stream
         self.container = None
+        self.ui = ui
         self.filename = filename
         settings_path = str(Path(PurePath(__file__).parents[1], 'settings', 'settings.ini'))
         self.settings = QSettings(settings_path, QSettings.Format.IniFormat)
@@ -63,12 +65,18 @@ class Encoder(QThread):
             pix_fmt = 'yuv420p'
             self.path = self.path.with_suffix('.mp4')
 
+        elif codec == 'Raw':
+            codec = 'rawvideo'
+            pix_fmt = 'bgr24'
+            self.path = self.path.with_suffix('.avi')
+
         if self.video_stream.inference_frame is not None: codec = 'libopenh264'
 
         framerate = 30
         if self.video_stream.status and self.video_stream.frame is not None:
             h, w, c = self.video_stream.frame.shape
-            if self.video_stream.inference_frame is not None:
+            flag =  self.ui.rec_camera.isChecked() and self.ui.rec_infer.isChecked()
+            if self.video_stream.inference_frame is not None and flag:
                 w = w + self.video_stream.inference_frame.shape[1]
                 _h = self.video_stream.inference_frame.shape[0]
                 h = _h if (_h > h) else h
@@ -79,10 +87,60 @@ class Encoder(QThread):
             self.av_stream.pix_fmt = pix_fmt
             self.av_stream.codec_context.time_base = Fraction(1, framerate)
 
-    def run(self):
+    def record_doe_video(self):
         last_time = time.time()
-        frame = None
         pts = 0
+        while not self.isInterruptionRequested():
+
+            current_time = time.time()
+            if current_time - last_time > self.av_stream.codec_context.time_base:
+                pts += self.av_stream.codec_context.time_base
+                last_time = current_time
+            else:
+                continue
+
+            frame = self.video_stream.frame
+            frame = av.VideoFrame.from_ndarray(frame, 'rgb24')
+            frame.pts = int(round(pts / self.av_stream.codec_context.time_base))
+
+            if frame is not None:
+                for packet in self.av_stream.encode(frame):
+                    self.container.mux(packet)
+        for packet in self.av_stream.encode(None):
+            self.container.mux(packet)
+        self.container.close()
+
+    def record_infer_video(self):
+        last_time = time.time()
+        pts = 0
+        while not self.isInterruptionRequested():
+
+            current_time = time.time()
+            if current_time - last_time > self.av_stream.codec_context.time_base:
+                pts += self.av_stream.codec_context.time_base
+                last_time = current_time
+            else:
+                continue
+
+            infer_frame = self.video_stream.inference_frame
+            infer_frame = av.VideoFrame.from_ndarray(infer_frame, 'rgb24')
+            infer_frame.pts = int(round(pts / self.av_stream.codec_context.time_base))
+
+            if infer_frame is not None:
+                for packet in self.av_stream.encode(infer_frame):
+                    self.container.mux(packet)
+        for packet in self.av_stream.encode(None):
+            self.container.mux(packet)
+        self.container.close()
+
+    def record_doe_infer_video(self):
+        last_time = time.time()
+        pts = 0
+
+        if self.video_stream.inference_frame is None:
+            _str = "Постобработка не запущена!\nВидео будет записано только с камеры."
+            self.rec_warning.emit(_str)
+
         while not self.isInterruptionRequested():
 
             current_time = time.time()
@@ -131,6 +189,14 @@ class Encoder(QThread):
         self.container.close()
 
 
+    def run(self):
+        if self.ui.rec_camera.isChecked() and self.ui.rec_infer.isChecked():
+            self.record_doe_infer_video()
+        elif not self.ui.rec_infer.isChecked():
+            self.record_doe_video()
+        elif not self.ui.rec_camera.isChecked():
+            self.record_infer_video()
+
 class RecordController:
     def __init__(self, ui, window, video_stream):
         super().__init__()
@@ -148,6 +214,8 @@ class RecordController:
         self.ui.stopRecordButton.clicked.connect(self.stop_record)
         self.ui.snapshotButton.clicked.connect(self.snapshot)
         self.ui.codecGroupBox.activated.connect(self.update_codec)
+        self.ui.rec_camera.clicked.connect(self.rec_camera_clicked)
+        self.ui.rec_infer.clicked.connect(self.rec_infer_clicked)
 
     def setup_ui(self):
         # Инициализация пути записи видео
@@ -155,6 +223,15 @@ class RecordController:
         self.settings = QSettings(settings_path, QSettings.Format.IniFormat)
         self.record_path = Path(self.settings.value('record/path'))
         self.ui.saveEdit.setText(str(self.record_path))
+
+    @Slot()
+    def rec_camera_clicked(self):
+        self.settings.setValue("record/rec_camera", self.ui.rec_camera.isChecked())
+
+    @Slot()
+    def rec_infer_clicked(self):
+        self.settings.setValue("record/rec_infer", self.ui.rec_infer.isChecked())
+
 
     @Slot()
     def update_codec(self):
@@ -175,8 +252,18 @@ class RecordController:
         if self.video_stream.frame is None or not self.video_stream.status:
             return
 
+        if not self.ui.rec_camera.isChecked() and not self.ui.rec_infer.isChecked():
+            QMessageBox.warning(None, 'Внимание!', 'Не выбран источник записи.')
+            return
+
+        if self.video_stream.inference_frame is None and self.ui.rec_infer.isChecked() and not self.ui.rec_camera.isChecked():
+            _str = "Постобработка не запущена!"
+            self.rec_warning(_str)
+            return
+
         filename = f'{datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S")}'
-        self.camera_encoder = Encoder(self.record_path, self.video_stream, filename)
+        self.camera_encoder = Encoder(self.record_path, self.video_stream, filename, self.ui)
+        self.camera_encoder.rec_warning.connect(self.rec_warning)
         self.camera_encoder.start()
 
         self.ui.startButton.setEnabled(False)
@@ -190,16 +277,17 @@ class RecordController:
             return
 
         if self.camera_encoder is not None:
+            self.camera_encoder.rec_warning.disconnect()
             self.camera_encoder.requestInterruption()
             self.camera_encoder.wait()
-        if self.inference_encoder is not None:
-            self.inference_encoder.requestInterruption()
-            self.inference_encoder.wait()
 
         self.ui.startButton.setEnabled(True)
         self.ui.stopButton.setEnabled(True)
         self.ui.recordButton.setEnabled(True)
         self.ui.stopRecordButton.setEnabled(False)
+
+    def rec_warning(self, _str):
+        QMessageBox.warning(None, 'Внимание!', f'{_str}')
 
     def snapshot(self):
         if self.video_stream.frame is None:

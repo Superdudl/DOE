@@ -34,10 +34,16 @@ class MainWindow(QMainWindow):
 
         self.ui.savePath.setIcon(QPixmap(':/icons/search.png'))
 
+        flag = self.settings.value('record/rec_camera', type=bool)
+        self.ui.rec_camera.setChecked(flag)
+        flag = self.settings.value('record/rec_infer', type=bool)
+        self.ui.rec_infer.setChecked(flag)
+
         codecs = {'MJPEG': 0,
                   "MPEG-4": 1,
                   'H.264': 2,
-                  'H.265': 3}
+                  'H.265': 3,
+                  'Raw': 4}
 
         for codec in codecs.keys():
             self.ui.codecGroupBox.addItem(f'{codec}')

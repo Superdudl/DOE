@@ -5,6 +5,7 @@ sys.path.append(__file__)
 from utils import Inference
 from PySide6.QtCore import QThread, Signal, QObject, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
+from PySide6.QtWidgets import QApplication
 import numpy as np
 
 
@@ -74,6 +75,11 @@ class InferenceController(QObject):
             self.inference.wait()
             self.ui.modelComboBox.setEnabled(True)
             self.video_stream.inference_frame = None
+            pixmap = QPixmap(1, 1)
+            pixmap.fill(Qt.black)
+            app = QApplication.instance()
+            app.removePostedEvents(self)
+            self.ui.inferenceLabel.setPixmap(pixmap)
 
     @Slot()
     def update_frame(self, img, frame):

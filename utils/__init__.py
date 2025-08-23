@@ -4,7 +4,6 @@ sys.path.append(__file__)
 from .videoCapture import VideoCapture
 from .inference import Inference
 from .videoStream import VideoStream
-from . import Classical_Correction
 
 from PySide6.QtCore import QSettings, QUrl
 from PySide6.QtGui import QDesktopServices

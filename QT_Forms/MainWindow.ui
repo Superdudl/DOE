@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1029</width>
-    <height>556</height>
+    <height>574</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -79,6 +79,9 @@
                <height>0</height>
               </size>
              </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 0, 0);</string>
+             </property>
              <property name="frameShape">
               <enum>QFrame::Shape::StyledPanel</enum>
              </property>
@@ -135,6 +138,9 @@
              </property>
              <property name="layoutDirection">
               <enum>Qt::LayoutDirection::LeftToRight</enum>
+             </property>
+             <property name="styleSheet">
+              <string notr="true">background-color: rgb(0, 0, 0);</string>
              </property>
              <property name="frameShape">
               <enum>QFrame::Shape::StyledPanel</enum>
@@ -219,9 +225,9 @@
           <property name="geometry">
            <rect>
             <x>0</x>
-            <y>0</y>
-            <width>318</width>
-            <height>243</height>
+            <y>-67</y>
+            <width>334</width>
+            <height>295</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -242,10 +248,17 @@
              <property name="sizeConstraint">
               <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
              </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="modelLabel">
+             <item row="8" column="1">
+              <widget class="QCheckBox" name="rec_camera">
                <property name="text">
-                <string>Модель</string>
+                <string>Запись с камеры</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="0">
+              <widget class="QLabel" name="exposureLabel">
+               <property name="text">
+                <string>Время накопления</string>
                </property>
               </widget>
              </item>
@@ -266,8 +279,15 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="2">
-              <widget class="QCheckBox" name="gainAuto">
+             <item row="4" column="0">
+              <widget class="QLabel" name="formatLabel">
+               <property name="text">
+                <string>Формат</string>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="2">
+              <widget class="QCheckBox" name="exposureAuto">
                <property name="enabled">
                 <bool>false</bool>
                </property>
@@ -276,10 +296,61 @@
                </property>
               </widget>
              </item>
+             <item row="5" column="0" colspan="3">
+              <widget class="Line" name="line_3">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="7" column="0">
+              <widget class="QLabel" name="codecLabel">
+               <property name="text">
+                <string>Кодек</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="0">
+              <widget class="QLabel" name="modelLabel">
+               <property name="text">
+                <string>Модель</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="modelComboBox"/>
+             </item>
+             <item row="7" column="1">
+              <widget class="QComboBox" name="codecGroupBox"/>
+             </item>
+             <item row="1" column="0" colspan="3">
+              <widget class="Line" name="line_2">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
              <item row="3" column="1">
               <widget class="QLineEdit" name="gainEdit">
                <property name="enabled">
                 <bool>false</bool>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="saveLabel">
+               <property name="text">
+                <string>Сохранить в</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QCheckBox" name="gainAuto">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Авто</string>
                </property>
               </widget>
              </item>
@@ -302,44 +373,6 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="2">
-              <widget class="QCheckBox" name="exposureAuto">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-               <property name="text">
-                <string>Авто</string>
-               </property>
-              </widget>
-             </item>
-             <item row="2" column="0">
-              <widget class="QLabel" name="exposureLabel">
-               <property name="text">
-                <string>Время накопления</string>
-               </property>
-              </widget>
-             </item>
-             <item row="5" column="0" colspan="3">
-              <widget class="Line" name="line_3">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="0">
-              <widget class="QLabel" name="formatLabel">
-               <property name="text">
-                <string>Формат</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0" colspan="3">
-              <widget class="Line" name="line_2">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
              <item row="2" column="1">
               <widget class="QLineEdit" name="exposureEdit">
                <property name="enabled">
@@ -347,18 +380,8 @@
                </property>
               </widget>
              </item>
-             <item row="6" column="0">
-              <widget class="QLabel" name="saveLabel">
-               <property name="text">
-                <string>Сохранить в</string>
-               </property>
-              </widget>
-             </item>
              <item row="4" column="1">
               <widget class="QComboBox" name="formatComboBox"/>
-             </item>
-             <item row="0" column="1">
-              <widget class="QComboBox" name="modelComboBox"/>
              </item>
              <item row="3" column="0">
               <widget class="QLabel" name="gainLabel">
@@ -367,15 +390,12 @@
                </property>
               </widget>
              </item>
-             <item row="7" column="0">
-              <widget class="QLabel" name="codecLabel">
+             <item row="9" column="1">
+              <widget class="QCheckBox" name="rec_infer">
                <property name="text">
-                <string>Кодек</string>
+                <string>Запись постобработки</string>
                </property>
               </widget>
-             </item>
-             <item row="7" column="1">
-              <widget class="QComboBox" name="codecGroupBox"/>
              </item>
             </layout>
            </item>
@@ -500,7 +520,7 @@
      <x>0</x>
      <y>0</y>
      <width>1029</width>
-     <height>33</height>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menu">

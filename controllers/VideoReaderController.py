@@ -2,8 +2,8 @@ import sys
 
 sys.path.append(__file__)
 
-from PySide6.QtCore import QThread, Signal, Slot
-from PySide6.QtWidgets import QMessageBox, QProgressDialog
+from PySide6.QtCore import QThread, Signal, Slot, QObject
+from PySide6.QtWidgets import QMessageBox, QProgressDialog, QApplication
 from PySide6.QtGui import QPixmap
 from utils import Inference
 import numpy as np
@@ -16,7 +16,6 @@ from fractions import Fraction
 import pycuda.driver as cuda
 import pycuda.autoinit
 
-
 class VideoWriter(QThread):
     next_frame = Signal(int, bool)
     finished = Signal(str)
@@ -27,7 +26,7 @@ class VideoWriter(QThread):
         self.input_filename = Path(filename)
         self.running = False
         self.frame = None
-        self.filename = Path(f'{datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S")}.mp4')
+        self.filename = Path(f'{datetime.strftime(datetime.now(), "%Y-%m-%d_%H-%M-%S")}.avi')
         self.container = None
 
         self.record_path = Path(output_dir) / self.filename
@@ -39,7 +38,9 @@ class VideoWriter(QThread):
         import pycuda.driver as cuda
         import pycuda.autoinit
 
-        codec = 'h264_nvenc' if cuda.Device.count() > 0 else 'h264'
+        # codec = 'h264_nvenc' if cuda.Device.count() > 0 else 'h264'
+
+        codec = 'rawvideo'
 
         framerate = fps
         if self.frame is not None:
@@ -48,7 +49,7 @@ class VideoWriter(QThread):
             self.av_stream = self.container.add_stream(codec, rate=framerate)
             self.av_stream.width = w
             self.av_stream.height = h
-            self.av_stream.pix_fmt = 'yuv420p'
+            self.av_stream.pix_fmt = 'bgr24'
             self.av_stream.codec_context.time_base = Fraction(1, framerate)
 
     def run(self):
@@ -64,7 +65,7 @@ class VideoWriter(QThread):
         self.inference.create(self.controller.model, self.frame.shape)
 
         input_video.set(cv2.CAP_PROP_POS_FRAMES, 0)
-        while True:
+        while not self.isInterruptionRequested():
             ret, frame = input_video.read()
             if not ret:
                 break
@@ -89,8 +90,7 @@ class VideoWriter(QThread):
         self.inference.clear()
         self.finished.emit(str(self.record_path))
 
-
-class VideoReader:
+class VideoReader(QObject):
     models_dir = Path(PurePath(__file__).parents[1], 'src', 'pretrained_models')
 
     def __init__(self, ui, window, filename=None):
@@ -106,8 +106,6 @@ class VideoReader:
         self.progress = QProgressDialog("Обработка видео...", "Отмена", 0, 100)
         self.progress.setWindowTitle(self.ui.modelComboBox.currentText())
         self.progress.setWindowIcon(QPixmap(':/icons/logo.png'))
-        self.progress.setCancelButton(None)
-        self.progress.exec()
 
     def open(self, filename):
         self.filename = filename
@@ -123,11 +121,19 @@ class VideoReader:
             self.encoder.next_frame.connect(self.update_progress)
             self.encoder.finished.connect(self.save_finished)
             self.setup_ui()
+            self.progress.canceled.connect(self.stop)
+            self.progress.exec()
+
+    @Slot()
+    def stop(self):
+        self.encoder.requestInterruption()
+        self.encoder.wait()
 
     @Slot()
     def update_progress(self, count, running):
         self.progress.setValue(count)
 
+    @Slot()
     def save_finished(self, output_path):
         self.progress.close()
         QMessageBox.information(self.window, 'Обработка завершена', f'Сохранено в {output_path}')

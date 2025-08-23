@@ -3,6 +3,7 @@ import sys
 sys.path.append(__file__)
 
 import numpy as np
+from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QObject, QThread, Signal, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
 from utils import VideoCapture
@@ -84,6 +85,12 @@ class VideoStream(QObject):
         self.status = False
         self.stream.wait()
         self.stream = None
+        self.frame = None
+        pixmap = QPixmap(1, 1)
+        pixmap.fill(Qt.black)
+        app = QApplication.instance()
+        app.removePostedEvents(self)
+        self.ui.videoCaptureLabel.setPixmap(pixmap)
 
     @Slot()
     def update_frame(self, img):
