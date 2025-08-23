@@ -1,4 +1,5 @@
 import sys
+import time
 
 sys.path.append(__file__)
 
@@ -53,6 +54,16 @@ class CameraController(QObject):
         self.ui.exposureAuto.clicked.connect(self.setExposureAuto)
         self.ui.gainAuto.clicked.connect(self.setGainAuto)
         self.ui.formatComboBox.activated.connect(self.setFormat)
+
+    def __del__(self):
+        try:
+            self.ui.exposureAuto.setEnabled(False)
+            self.ui.exposureEdit.setEnabled(False)
+            self.ui.gainEdit.setEnabled(False)
+            self.ui.gainAuto.setEnabled(False)
+            self.ui.formatComboBox.clear()
+        except RuntimeError as e:
+            return
 
     @Slot()
     def setFormat(self):

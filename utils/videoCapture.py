@@ -1,4 +1,6 @@
 import sys
+import time
+
 sys.path.append(__file__)
 
 from pypylon import pylon
@@ -14,7 +16,7 @@ class VideoCapture:
         try:
             self.camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateDevice(di))
             self.camera.Open()
-            self.camera.PixelFormat.Value = 'BayerBG8' # 'YUV422Packed'
+            self.camera.UserSetSelector.Value = "UserSet1"
         except _genicam.RuntimeException as e:
             print("Камера не подключена\n")
             self.camera = None
@@ -25,15 +27,18 @@ class VideoCapture:
 
     def start(self):
         if self.camera is not None:
+            self.camera.UserSetLoad.Execute()
             self.camera.StartGrabbing(pylon.GrabStrategy_LatestImageOnly)
 
     def stop(self):
         if self.camera is not None:
             self.camera.StopGrabbing()
+            time.sleep(0.1)
+            self.camera.UserSetSave.Execute()
             self.camera.Close()
 
     def get_frame(self):
-        grabResult = self.camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
+        grabResult = self.camera.RetrieveResult(11000, pylon.TimeoutHandling_ThrowException)
         try:
             if grabResult.GrabSucceeded():
                 # Access the image data

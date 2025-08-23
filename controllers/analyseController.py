@@ -1,5 +1,7 @@
 import sys
 
+import numpy as np
+
 sys.path.append(__file__)
 
 from PySide6.QtWidgets import QFileDialog
@@ -57,7 +59,12 @@ class AnalyseController:
         filters = "Изображение (*.bmp *.jpg *.jpeg *.png)"
         image_path, _ = QFileDialog.getOpenFileName(None, "Выберите оригинальное изображение", '', filters)
         if len(image_path) == 0: return
-        self.original_image = cv2.imread(Path(image_path), cv2.IMREAD_COLOR_RGB)
+        filepath = Path(image_path)
+        bytes_stream = open(filepath, 'rb')
+        bytes = bytearray(bytes_stream.read())
+        bytes_stream.close()
+        array = np.array(bytes, dtype=np.uint8)
+        self.original_image = cv2.imdecode(array, cv2.IMREAD_COLOR_RGB)
         h, w, c = self.original_image.shape
         qimage = QImage(self.original_image, w, h, w * c, QImage.Format.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)
@@ -69,7 +76,12 @@ class AnalyseController:
         filters = "Изображение (*.bmp *.jpg *.jpeg *.png)"
         image_path, _ = QFileDialog.getOpenFileName(None, "Выберите искаженное изображение", '', filters)
         if len(image_path) == 0: return
-        self.blurred_image = cv2.imread(Path(image_path), cv2.IMREAD_COLOR_RGB)
+        filepath = Path(image_path)
+        bytes_stream = open(filepath, 'rb')
+        bytes = bytearray(bytes_stream.read())
+        bytes_stream.close()
+        array = np.array(bytes, dtype=np.uint8)
+        self.blurred_image = cv2.imdecode(array, cv2.IMREAD_COLOR_RGB)
         h, w, c = self.blurred_image.shape
         qimage = QImage(self.blurred_image, w, h, w * c, QImage.Format.Format_RGB888)
         pixmap = QPixmap.fromImage(qimage)

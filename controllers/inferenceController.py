@@ -3,7 +3,6 @@ from pathlib import PurePath, Path
 
 sys.path.append(__file__)
 from utils import Inference
-import cv2
 from PySide6.QtCore import QThread, Signal, QObject, Slot
 from PySide6.QtGui import QImage, QPixmap, Qt
 import numpy as np

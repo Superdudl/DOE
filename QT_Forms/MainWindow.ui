@@ -220,8 +220,8 @@
            <rect>
             <x>0</x>
             <y>0</y>
-            <width>321</width>
-            <height>230</height>
+            <width>318</width>
+            <height>243</height>
            </rect>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_2">
@@ -238,14 +238,48 @@
             <number>9</number>
            </property>
            <item>
-            <layout class="QGridLayout" name="settingsGridLayout" columnstretch="1,4,1">
+            <layout class="QGridLayout" name="settingsGridLayout" columnstretch="1,0,0">
              <property name="sizeConstraint">
               <enum>QLayout::SizeConstraint::SetDefaultConstraint</enum>
              </property>
-             <item row="4" column="0">
-              <widget class="QLabel" name="formatLabel">
+             <item row="0" column="0">
+              <widget class="QLabel" name="modelLabel">
                <property name="text">
-                <string>Формат</string>
+                <string>Модель</string>
+               </property>
+              </widget>
+             </item>
+             <item row="6" column="2">
+              <widget class="QPushButton" name="savePath">
+               <property name="maximumSize">
+                <size>
+                 <width>50</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset resource="../view/resources.qrc">
+                 <normaloff>:/icons/search.png</normaloff>:/icons/search.png</iconset>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="2">
+              <widget class="QCheckBox" name="gainAuto">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="text">
+                <string>Авто</string>
+               </property>
+              </widget>
+             </item>
+             <item row="3" column="1">
+              <widget class="QLineEdit" name="gainEdit">
+               <property name="enabled">
+                <bool>false</bool>
                </property>
               </widget>
              </item>
@@ -268,27 +302,6 @@
                </property>
               </widget>
              </item>
-             <item row="2" column="1">
-              <widget class="QLineEdit" name="exposureEdit">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="modelLabel">
-               <property name="text">
-                <string>Модель</string>
-               </property>
-              </widget>
-             </item>
-             <item row="1" column="0" colspan="3">
-              <widget class="Line" name="line_2">
-               <property name="orientation">
-                <enum>Qt::Orientation::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
              <item row="2" column="2">
               <widget class="QCheckBox" name="exposureAuto">
                <property name="enabled">
@@ -299,20 +312,10 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
-              <widget class="QComboBox" name="modelComboBox"/>
-             </item>
              <item row="2" column="0">
               <widget class="QLabel" name="exposureLabel">
                <property name="text">
                 <string>Время накопления</string>
-               </property>
-              </widget>
-             </item>
-             <item row="6" column="0">
-              <widget class="QLabel" name="saveLabel">
-               <property name="text">
-                <string>Сохранить в</string>
                </property>
               </widget>
              </item>
@@ -323,12 +326,39 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="1">
-              <widget class="QLineEdit" name="gainEdit">
+             <item row="4" column="0">
+              <widget class="QLabel" name="formatLabel">
+               <property name="text">
+                <string>Формат</string>
+               </property>
+              </widget>
+             </item>
+             <item row="1" column="0" colspan="3">
+              <widget class="Line" name="line_2">
+               <property name="orientation">
+                <enum>Qt::Orientation::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item row="2" column="1">
+              <widget class="QLineEdit" name="exposureEdit">
                <property name="enabled">
                 <bool>false</bool>
                </property>
               </widget>
+             </item>
+             <item row="6" column="0">
+              <widget class="QLabel" name="saveLabel">
+               <property name="text">
+                <string>Сохранить в</string>
+               </property>
+              </widget>
+             </item>
+             <item row="4" column="1">
+              <widget class="QComboBox" name="formatComboBox"/>
+             </item>
+             <item row="0" column="1">
+              <widget class="QComboBox" name="modelComboBox"/>
              </item>
              <item row="3" column="0">
               <widget class="QLabel" name="gainLabel">
@@ -337,35 +367,15 @@
                </property>
               </widget>
              </item>
-             <item row="3" column="2">
-              <widget class="QCheckBox" name="gainAuto">
-               <property name="enabled">
-                <bool>false</bool>
-               </property>
+             <item row="7" column="0">
+              <widget class="QLabel" name="codecLabel">
                <property name="text">
-                <string>Авто</string>
+                <string>Кодек</string>
                </property>
               </widget>
              </item>
-             <item row="6" column="2">
-              <widget class="QPushButton" name="savePath">
-               <property name="maximumSize">
-                <size>
-                 <width>50</width>
-                 <height>16777215</height>
-                </size>
-               </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset resource="../view/resources.qrc">
-                 <normaloff>:/icons/search.png</normaloff>:/icons/search.png</iconset>
-               </property>
-              </widget>
-             </item>
-             <item row="4" column="1">
-              <widget class="QComboBox" name="formatComboBox"/>
+             <item row="7" column="1">
+              <widget class="QComboBox" name="codecGroupBox"/>
              </item>
             </layout>
            </item>
@@ -506,8 +516,19 @@
     </property>
     <addaction name="actionPSNR_SSIM"/>
    </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Справка</string>
+    </property>
+    <addaction name="action"/>
+    <addaction name="action_2"/>
+    <addaction name="action_3"/>
+    <addaction name="action_4"/>
+    <addaction name="action_5"/>
+   </widget>
    <addaction name="menu"/>
    <addaction name="analise"/>
+   <addaction name="menu_2"/>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
   <action name="connect_camera">
@@ -532,6 +553,31 @@
   <action name="actionPSNR_SSIM">
    <property name="text">
     <string>PSNR и SSIM</string>
+   </property>
+  </action>
+  <action name="action">
+   <property name="text">
+    <string>Спецификация</string>
+   </property>
+  </action>
+  <action name="action_2">
+   <property name="text">
+    <string>Текст программы</string>
+   </property>
+  </action>
+  <action name="action_3">
+   <property name="text">
+    <string>Описание программы</string>
+   </property>
+  </action>
+  <action name="action_4">
+   <property name="text">
+    <string>Руководство оператора</string>
+   </property>
+  </action>
+  <action name="action_5">
+   <property name="text">
+    <string>Руководство системного программиста</string>
    </property>
   </action>
  </widget>
