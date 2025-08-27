@@ -70,8 +70,6 @@ class Encoder(QThread):
             pix_fmt = 'bgr24'
             self.path = self.path.with_suffix('.avi')
 
-        if self.video_stream.inference_frame is not None: codec = 'libopenh264'
-
         framerate = 30
         if self.video_stream.status and self.video_stream.frame is not None:
             h, w, c = self.video_stream.frame.shape
