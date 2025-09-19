@@ -9,7 +9,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import QPixmap, QImage, Qt
 from pathlib import Path, PurePath
 from utils import Inference
-from utils.metrics import psnr, ssim
+from utils.metrics import psnr, ssim, match_template
 import cv2
 
 import pycuda.driver as cuda
@@ -90,6 +90,7 @@ class AnalyseController:
 
     @Slot()
     def analyse(self):
+        if self.original_image is None or self.blurred_image is None: return
 
         # Восстановление изображения
 
@@ -97,6 +98,7 @@ class AnalyseController:
         inference = Inference()
         inference.create(self.model, self.blurred_image.shape)
         self.result_image, _ = inference(self.blurred_image)
+        self.original_image = match_template(self.result_image, self.original_image)
 
         #--------------------------------------------------------------------------------------------------------------
         # from utils.Classical_Correction import restore_image
