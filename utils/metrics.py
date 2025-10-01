@@ -34,55 +34,50 @@ def match_template(img1, img2):
     aligned_image = cv2.warpAffine(img2, M, (w, h))
     return aligned_image
 
-def match_histograms(source, reference):
-    src = source[:, :].ravel()
-    ref = reference[:, :].ravel()
+def match_histograms(source: np.ndarray, reference: np.ndarray):
+    if len(source.shape) > 2:
+        channels = source.shape[2]
+    else:
+        channels = 1
+        source = np.expand_dims(source, axis=2)
+        reference = np.expand_dims(reference, axis=2)
 
-    src_hist, _ = np.histogram(src, bins=256, range=(0, 256), density=True)
-    ref_hist, _ = np.histogram(ref, bins=256, range=(0, 256), density=True)
+    new_channels = []
+    for channel in range(0, channels):
+        src = source[:, :].ravel()
+        ref = reference[:, :].ravel()
 
-    src_cdf = np.cumsum(src_hist)
-    ref_cdf = np.cumsum(ref_hist)
+        src_hist, _ = np.histogram(src, bins=256, range=(0, 256), density=True)
+        ref_hist, _ = np.histogram(ref, bins=256, range=(0, 256), density=True)
 
-    lut_table = np.zeros(256, dtype=np.uint8)
-    for i in range(256):
-        diff = np.abs(ref_cdf - src_cdf[i])
-        lut_table[i] = np.argmin(diff)
-        img = cv2.LUT(source, lut_table)
+        src_cdf = np.cumsum(src_hist)
+        ref_cdf = np.cumsum(ref_hist)
 
+        lut_table = np.zeros(256, dtype=np.uint8)
+        img = None
+        for i in range(256):
+            diff = np.abs(ref_cdf - src_cdf[i])
+            lut_table[i] = np.argmin(diff)
+        img = cv2.LUT(source[:, :, channel], lut_table)
+        new_channels.append(img)
+
+    img = cv2.merge(new_channels)
     return img
 
 
 def psnr(img1: np.ndarray, img2: np.ndarray, search_area=10) -> float:
-    best_psnr = 0
-    best_dx = 0
-    best_dy = 0
+
     h, w = img2.shape[0:2]
-    center_x, center_y = w // 2, h  // 2
+    # img2 = match_histograms(img2, img1)
+    mse = np.mean(np.power(img1.astype(np.float32) - img2.astype(np.float32), 2))
+    max = 255.0
+    psnr = 20 * np.log10(max / np.sqrt(mse))
 
-    for dy in range(-search_area, search_area + 1):
-        for dx in range(-search_area, search_area + 1):
-
-            img2 = match_histograms(img2, img1)
-
-            M = np.float32([[1, 0, dx],
-                            [0, 1, dy]])
-            new_img2 = cv2.warpAffine(img2, M, (w, h))
-            mse = np.mean(np.power(img1.astype(np.float32) - new_img2.astype(np.float32), 2))
-            if mse == 0:
-                return float('inf')
-            max = 255.0
-            psnr = 20 * np.log10(max / np.sqrt(mse))
-            if psnr > best_psnr:
-                best_psnr = psnr
-                best_dx = dx
-                best_dy = dy
-
-    result = cv2.hconcat([img1, img2])
-    while cv2.waitKey(1) != ord('q'):
-        cv2.imshow("PSNR", result)
-    cv2.destroyWindow('PSNR')
-    return best_psnr
+    # result = cv2.hconcat([img1, img2])
+    # while cv2.waitKey(1) != ord('q'):
+    #     cv2.imshow("PSNR", result)
+    # cv2.destroyWindow('PSNR')
+    return psnr
 
 
 def ssim(img1: np.ndarray, img2: np.ndarray) -> float:

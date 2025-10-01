@@ -9,7 +9,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import QPixmap, QImage, Qt
 from pathlib import Path, PurePath
 from utils import Inference
-from utils.metrics import psnr, ssim, match_template
+from utils.metrics import psnr, ssim, match_template, match_histograms
 import cv2
 
 import pycuda.driver as cuda
@@ -116,6 +116,9 @@ class AnalyseController:
 
         original_gray = cv2.cvtColor(self.original_image, cv2.COLOR_RGB2GRAY)
         result_gray = cv2.cvtColor(self.result_image, cv2.COLOR_RGB2GRAY)
+
+        if self.ui.match_hists_checkbox.isChecked():
+            result_gray = match_histograms(result_gray, original_gray)
 
         psnr_metric = psnr(original_gray, result_gray)
         ssim_metric = ssim(original_gray, result_gray)

@@ -6,6 +6,7 @@ from PySide6.QtCore import QSettings
 from view.MainWindow import MainWindow
 from pathlib import Path, PurePath
 
+
 DEBUG = False
 
 def main():
