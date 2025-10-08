@@ -3,7 +3,7 @@ import sys
 sys.path.append(__file__)
 
 from .metricsDialogUI import Ui_Dialog
-from PySide6.QtWidgets import QDialog
+from PySide6.QtWidgets import QDialog, QButtonGroup
 
 
 class MetricsDialog(QDialog):

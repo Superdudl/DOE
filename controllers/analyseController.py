@@ -9,7 +9,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtGui import QPixmap, QImage, Qt
 from pathlib import Path, PurePath
 from utils import Inference
-from utils.metrics import psnr, ssim, match_template, match_histograms
+from utils.metrics import psnr, ssim, match_template, match_histograms, deconv
 import cv2
 
 import pycuda.driver as cuda
@@ -45,6 +45,12 @@ class AnalyseController:
         self.ui.blurredButton.clicked.connect(self.open_blurred_image)
         self.ui.analyseButton.clicked.connect(self.analyse)
         self.ui.comboBox.activated.connect(self.update_model)
+        self.ui.match_hists_checkbox.clicked.connect(lambda checked: self.ui.deconv_checkbox.setChecked(not checked)
+                                                     if self.ui.deconv_checkbox.isChecked()
+                                                     else True)
+        self.ui.deconv_checkbox.clicked.connect(lambda checked: self.ui.match_hists_checkbox.setChecked(not checked)
+                                                if self.ui.match_hists_checkbox.isChecked()
+                                                else True)
 
     @Slot()
     def update_model(self):
@@ -106,12 +112,6 @@ class AnalyseController:
         #--------------------------------------------------------------------------------------------------------------
 
         inference.clear()
-        h, w, c = self.blurred_image.shape
-        qimage = QImage(self.result_image, w, h, w * c, QImage.Format.Format_RGB888)
-        pixmap = QPixmap.fromImage(qimage)
-        pixmap = pixmap.scaled(self.ui.analyseLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
-        self.ui.analyseLabel.setPixmap(pixmap)
-
         # Расчет SSIM и PSNR
 
         original_gray = cv2.cvtColor(self.original_image, cv2.COLOR_RGB2GRAY)
@@ -119,10 +119,22 @@ class AnalyseController:
 
         if self.ui.match_hists_checkbox.isChecked():
             result_gray = match_histograms(result_gray, original_gray)
+            self.result_image = cv2.cvtColor(result_gray, cv2.COLOR_GRAY2BGR)
+        elif self.ui.deconv_checkbox.isChecked():
+            blurred_gray = cv2.cvtColor(self.blurred_image, cv2.COLOR_BGR2GRAY)
+            self.result_image = np.ascontiguousarray(deconv(blurred_gray, original_gray))
+            result_gray = self.result_image
+            self.result_image = cv2.cvtColor(self.result_image, cv2.COLOR_GRAY2BGR)
 
         psnr_metric = psnr(original_gray, result_gray)
         ssim_metric = ssim(original_gray, result_gray)
 
         self.ui.psnrLineEdit.setText(f'{psnr_metric:.2f}')
         self.ui.ssimLineEdit.setText(f'{ssim_metric:.2f}')
+
+        h, w, c = self.blurred_image.shape
+        qimage = QImage(self.result_image, w, h, w * c, QImage.Format.Format_RGB888)
+        pixmap = QPixmap.fromImage(qimage)
+        pixmap = pixmap.scaled(self.ui.analyseLabel.size(), Qt.AspectRatioMode.KeepAspectRatio)
+        self.ui.analyseLabel.setPixmap(pixmap)
 

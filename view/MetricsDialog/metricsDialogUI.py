@@ -116,6 +116,24 @@ class Ui_Dialog(object):
         self.widget.setObjectName(u"widget")
         self.gridLayout = QGridLayout(self.widget)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer, 1, 0, 1, 1)
+
+        self.label = QLabel(self.widget)
+        self.label.setObjectName(u"label")
+        font = QFont()
+        font.setPointSize(22)
+        self.label.setFont(font)
+        self.label.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.label.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+
+        self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
+
+        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer_3, 1, 5, 1, 1)
+
         self.psnrLineEdit = QLineEdit(self.widget)
         self.psnrLineEdit.setObjectName(u"psnrLineEdit")
         sizePolicy1 = QSizePolicy(QSizePolicy.Policy.Preferred, QSizePolicy.Policy.Fixed)
@@ -124,25 +142,11 @@ class Ui_Dialog(object):
         sizePolicy1.setHeightForWidth(self.psnrLineEdit.sizePolicy().hasHeightForWidth())
         self.psnrLineEdit.setSizePolicy(sizePolicy1)
         self.psnrLineEdit.setMinimumSize(QSize(0, 28))
-        font = QFont()
-        font.setPointSize(22)
         self.psnrLineEdit.setFont(font)
         self.psnrLineEdit.setFocusPolicy(Qt.FocusPolicy.NoFocus)
         self.psnrLineEdit.setReadOnly(True)
 
         self.gridLayout.addWidget(self.psnrLineEdit, 1, 3, 1, 1)
-
-        self.horizontalSpacer_3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.gridLayout.addItem(self.horizontalSpacer_3, 1, 5, 1, 1)
-
-        self.psnrLabel = QLabel(self.widget)
-        self.psnrLabel.setObjectName(u"psnrLabel")
-        self.psnrLabel.setFont(font)
-        self.psnrLabel.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.psnrLabel.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-
-        self.gridLayout.addWidget(self.psnrLabel, 1, 1, 1, 1)
 
         self.comboBox = QComboBox(self.widget)
         self.comboBox.setObjectName(u"comboBox")
@@ -155,26 +159,6 @@ class Ui_Dialog(object):
 
         self.gridLayout.addWidget(self.comboBox, 0, 3, 1, 2)
 
-        self.ssimLabel = QLabel(self.widget)
-        self.ssimLabel.setObjectName(u"ssimLabel")
-        self.ssimLabel.setFont(font)
-        self.ssimLabel.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.ssimLabel.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-
-        self.gridLayout.addWidget(self.ssimLabel, 2, 1, 1, 1)
-
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
-
-        self.gridLayout.addItem(self.horizontalSpacer_2, 1, 2, 1, 1)
-
-        self.label = QLabel(self.widget)
-        self.label.setObjectName(u"label")
-        self.label.setFont(font)
-        self.label.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
-        self.label.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
-
-        self.gridLayout.addWidget(self.label, 0, 1, 1, 1)
-
         self.ssimLineEdit = QLineEdit(self.widget)
         self.ssimLineEdit.setObjectName(u"ssimLineEdit")
         sizePolicy1.setHeightForWidth(self.ssimLineEdit.sizePolicy().hasHeightForWidth())
@@ -186,14 +170,35 @@ class Ui_Dialog(object):
 
         self.gridLayout.addWidget(self.ssimLineEdit, 2, 3, 1, 1)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.psnrLabel = QLabel(self.widget)
+        self.psnrLabel.setObjectName(u"psnrLabel")
+        self.psnrLabel.setFont(font)
+        self.psnrLabel.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.psnrLabel.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
 
-        self.gridLayout.addItem(self.horizontalSpacer, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.psnrLabel, 1, 1, 1, 1)
+
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout.addItem(self.horizontalSpacer_2, 1, 2, 1, 1)
+
+        self.ssimLabel = QLabel(self.widget)
+        self.ssimLabel.setObjectName(u"ssimLabel")
+        self.ssimLabel.setFont(font)
+        self.ssimLabel.setLayoutDirection(Qt.LayoutDirection.LeftToRight)
+        self.ssimLabel.setAlignment(Qt.AlignmentFlag.AlignRight|Qt.AlignmentFlag.AlignTrailing|Qt.AlignmentFlag.AlignVCenter)
+
+        self.gridLayout.addWidget(self.ssimLabel, 2, 1, 1, 1)
 
         self.match_hists_checkbox = QCheckBox(self.widget)
         self.match_hists_checkbox.setObjectName(u"match_hists_checkbox")
 
         self.gridLayout.addWidget(self.match_hists_checkbox, 1, 4, 1, 1)
+
+        self.deconv_checkbox = QCheckBox(self.widget)
+        self.deconv_checkbox.setObjectName(u"deconv_checkbox")
+
+        self.gridLayout.addWidget(self.deconv_checkbox, 2, 4, 1, 1)
 
 
         self.verticalLayout.addWidget(self.widget)
@@ -217,9 +222,10 @@ class Ui_Dialog(object):
         self.blurredButton.setText(QCoreApplication.translate("Dialog", u"\u041e\u0442\u043a\u0440\u044b\u0442\u044c \u0438\u0441\u043a\u0430\u0436\u0435\u043d\u043d\u043e\u0435 \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0435", None))
         self.analyseLabel.setText("")
         self.analyseButton.setText(QCoreApplication.translate("Dialog", u"\u0410\u043d\u0430\u043b\u0438\u0437", None))
+        self.label.setText(QCoreApplication.translate("Dialog", u"\u041c\u043e\u0434\u0435\u043b\u044c", None))
         self.psnrLabel.setText(QCoreApplication.translate("Dialog", u"PSNR", None))
         self.ssimLabel.setText(QCoreApplication.translate("Dialog", u"SSIM", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"\u041c\u043e\u0434\u0435\u043b\u044c", None))
         self.match_hists_checkbox.setText(QCoreApplication.translate("Dialog", u"\u0412\u044b\u0440\u0430\u0432\u043d\u0438\u0432\u0430\u043d\u0438\u0435 \u0433\u0438\u0441\u0442\u043e\u0433\u0440\u0430\u043c\u043c", None))
+        self.deconv_checkbox.setText(QCoreApplication.translate("Dialog", u"\u0420\u0435\u0433\u0443\u043b\u044f\u0440\u0438\u0437\u0430\u0446\u0438\u044f \u0422\u0438\u0445\u043e\u043d\u043e\u0432\u0430", None))
     # retranslateUi
 
