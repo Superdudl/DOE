@@ -1,7 +1,6 @@
 import sys
 
 import numpy as np
-from sympy.codegen.ast import continue_
 
 sys.path.append(__file__)
 
@@ -100,29 +99,25 @@ class AnalyseController:
         if self.original_image is None or self.blurred_image is None: return
 
         # Восстановление изображения
-
+        original_image = self.original_image.copy()
+        blurred_image = self.blurred_image.copy()
         if cuda.Device.count() == 0: return
         inference = Inference()
-        inference.create(self.model, self.blurred_image.shape)
-        self.result_image, _ = inference(self.blurred_image)
-        self.original_image = match_template(self.result_image, self.original_image)
-
-        #--------------------------------------------------------------------------------------------------------------
-        # from utils.Classical_Correction import restore_image
-        # self.result_image = restore_image(self.blurred_image)
-        #--------------------------------------------------------------------------------------------------------------
+        inference.create(self.model, blurred_image.shape)
+        self.result_image, _ = inference(blurred_image)
+        original_image = match_template(self.result_image, original_image)
 
         inference.clear()
         # Расчет SSIM и PSNR
 
-        original_gray = cv2.cvtColor(self.original_image, cv2.COLOR_RGB2GRAY)
+        original_gray = cv2.cvtColor(original_image, cv2.COLOR_RGB2GRAY)
         result_gray = cv2.cvtColor(self.result_image, cv2.COLOR_RGB2GRAY)
 
         if self.ui.match_hists_checkbox.isChecked():
             result_gray = match_histograms(result_gray, original_gray)
             self.result_image = cv2.cvtColor(result_gray, cv2.COLOR_GRAY2BGR)
         elif self.ui.deconv_checkbox.isChecked():
-            blurred_gray = cv2.cvtColor(self.blurred_image, cv2.COLOR_BGR2GRAY)
+            blurred_gray = cv2.cvtColor(blurred_image, cv2.COLOR_BGR2GRAY)
             self.result_image = np.ascontiguousarray(deconv(blurred_gray, original_gray))
             result_gray = self.result_image
             self.result_image = cv2.cvtColor(self.result_image, cv2.COLOR_GRAY2BGR)

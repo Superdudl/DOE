@@ -129,18 +129,11 @@ def match_histograms(source: np.ndarray, reference: np.ndarray):
     return img
 
 
-def psnr(img1: np.ndarray, img2: np.ndarray, search_area=10) -> float:
+def psnr(img1: np.ndarray, img2: np.ndarray) -> float:
 
-    h, w = img2.shape[0:2]
-    # img2 = match_histograms(img2, img1)
     mse = np.mean(np.power(img1.astype(np.float32) - img2.astype(np.float32), 2))
     max = 255.0
     psnr = 20 * np.log10(max / np.sqrt(mse))
-
-    # result = cv2.hconcat([img1, img2])
-    # while cv2.waitKey(1) != ord('q'):
-    #     cv2.imshow("PSNR", result)
-    # cv2.destroyWindow('PSNR')
     return psnr
 
 

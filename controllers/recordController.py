@@ -288,8 +288,18 @@ class RecordController:
         QMessageBox.warning(None, 'Внимание!', f'{_str}')
 
     def snapshot(self):
-        if self.video_stream.frame is None:
+        if self.video_stream.frame is None or not self.video_stream.status:
             return
+
+        if not self.ui.rec_camera.isChecked() and not self.ui.rec_infer.isChecked():
+            QMessageBox.warning(None, 'Внимание!', 'Не выбран источник записи.')
+            return
+
+        if self.video_stream.inference_frame is None and self.ui.rec_infer.isChecked() and not self.ui.rec_camera.isChecked():
+            _str = "Постобработка не запущена!"
+            self.rec_warning(_str)
+            return
+
         frame = np.copy(self.video_stream.frame)
         if self.video_stream.inference_frame is not None:
             infer_frame = np.copy(self.video_stream.inference_frame)
@@ -299,7 +309,20 @@ class RecordController:
         image_path, extension = QFileDialog.getSaveFileName(None, 'Сохранить как', '', filter=filters)
         if len(image_path) < 1: return
         image_path = Path(image_path)
-        frame = frame if infer_frame is None else cv2.hconcat([frame, infer_frame])
+
+        if self.ui.rec_camera.isChecked() and self.ui.rec_infer.isChecked():
+            if infer_frame is None:
+                _str = "Постобработка не запущена!\nВидео будет записано только с камеры."
+                self.rec_warning(_str)
+            frame = frame if infer_frame is None else cv2.hconcat([frame, infer_frame])
+
+        elif not self.ui.rec_infer.isChecked():
+            pass
+
+        elif not self.ui.rec_camera.isChecked():
+            frame = infer_frame
+
+        frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         ret, buffer = cv2.imencode(image_path.suffix, frame)
         buffer.tofile(image_path)
 
