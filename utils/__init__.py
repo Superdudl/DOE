@@ -1,5 +1,20 @@
 import sys
 sys.path.append(__file__)
+import subprocess
+
+def open_pdf(filepath):
+    path = Path(filepath)
+    if path.exists():
+        QDesktopServices.openUrl(QUrl.fromLocalFile(path))
+    else:
+        QMessageBox.warning(None, 'Ошибка', 'Файл не найден')
+
+def cuda_is_available():
+    try:
+        result = subprocess.run(['nvcc', '--version'], capture_output=True, text=True)
+        if result.returncode == 0: return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
 
 from .videoCapture import VideoCapture
 from .inference import Inference
@@ -16,11 +31,3 @@ class CONFIG:
     DEBUG = _settings.value('config/DEBUG', type=bool)
 
 DEBUG = CONFIG.DEBUG
-
-def open_pdf(filepath):
-    path = Path(filepath)
-    if path.exists():
-        QDesktopServices.openUrl(QUrl.fromLocalFile(path))
-    else:
-        QMessageBox.warning(None, 'Ошибка', 'Файл не найден')
-

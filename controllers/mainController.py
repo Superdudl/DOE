@@ -60,6 +60,9 @@ class MainController(QObject):
     def connect_camera(self):
         if DEBUG: source = 'DEBUG'
         else: source = 'camera'
+        self.inference_controller.stop()
+        self.video_stream.stop_stream()
+        self.setup_controllers()
         self.video_stream.start_stream(source)
         if not self.video_stream.status:
             QMessageBox.warning(self.window, "Ошибка", "Камера не подключена")

@@ -15,6 +15,7 @@ class VideoCapture:
         di.SetModelName('acA780-75gc')
         try:
             self.camera = pylon.InstantCamera(pylon.TlFactory.GetInstance().CreateDevice(di))
+            self.camera.Close()
             self.camera.Open()
             self.camera.UserSetSelector.Value = "UserSet1"
         except _genicam.RuntimeException as e:
@@ -38,7 +39,7 @@ class VideoCapture:
             self.camera.Close()
 
     def get_frame(self):
-        grabResult = self.camera.RetrieveResult(11000, pylon.TimeoutHandling_ThrowException)
+        grabResult = self.camera.RetrieveResult(5000, pylon.TimeoutHandling_ThrowException)
         try:
             if grabResult.GrabSucceeded():
                 # Access the image data

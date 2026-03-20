@@ -1,7 +1,7 @@
 import sys
 
 import numpy as np
-import pycuda.driver as cuda
+from . import cuda_is_available
 import time
 import tensorrt as trt
 
@@ -9,6 +9,10 @@ import tensorrt as trt
 class Inference:
     def __init__(self, /):
         super().__init__()
+
+        if cuda_is_available():
+            import pycuda.driver as cuda
+
         cuda.init()
         device = cuda.Device(0)
         self.ctx = device.make_context()

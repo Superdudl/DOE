@@ -7,8 +7,8 @@ from pathlib import Path, PurePath
 from PySide6.QtWidgets import QMainWindow
 from PySide6.QtGui import QPixmap
 from PySide6.QtCore import QSettings
-from .. import resources
 
+from .. import resources
 
 class MainWindow(QMainWindow):
     def __init__(self):
@@ -52,9 +52,12 @@ class MainWindow(QMainWindow):
 
     def find_models(self):
         path = Path(PurePath(__file__).parents[2], 'src', 'pretrained_models')
+
+        self.ui.modelComboBox.addItem("Classic method")
+
         for i, filename in enumerate(path.glob('*trt')):
             self.ui.modelComboBox.addItem("")
-            self.ui.modelComboBox.setItemText(i, str(filename.name))
+            self.ui.modelComboBox.setItemText(i + 1, str(filename.name))
 
     def closeEvent(self, event, /):
         pass

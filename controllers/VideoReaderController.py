@@ -3,18 +3,14 @@ import sys
 sys.path.append(__file__)
 
 from PySide6.QtCore import QThread, Signal, Slot, QObject
-from PySide6.QtWidgets import QMessageBox, QProgressDialog, QApplication
+from PySide6.QtWidgets import QMessageBox, QProgressDialog
 from PySide6.QtGui import QPixmap
 from utils import Inference
-import numpy as np
 from pathlib import Path, PurePath
 import cv2
 import av
-from view import resources
 from datetime import datetime
 from fractions import Fraction
-import pycuda.driver as cuda
-import pycuda.autoinit
 
 class VideoWriter(QThread):
     next_frame = Signal(int, bool)
@@ -54,15 +50,27 @@ class VideoWriter(QThread):
 
     def run(self):
         self.running = True
-        self.inference = Inference()
         input_video = cv2.VideoCapture(self.input_filename)
         fps = int(input_video.get(cv2.CAP_PROP_FPS))
         total_frames = input_video.get(cv2.CAP_PROP_FRAME_COUNT)
-        if not total_frames: return
+        if not total_frames:
+            ret = True
+            while ret:
+                ret, self.frame = input_video.read()
+                total_frames += 1.0
+        if not total_frames:
+            self.finished.emit('-1')
+            return
 
+        input_video.set(cv2.CAP_PROP_POS_FRAMES, 0.0)
         ret, self.frame = input_video.read()
         if not ret: return
-        self.inference.create(self.controller.model, self.frame.shape)
+        if self.controller.model.stem != "Classic method":
+            self.inference = Inference()
+            self.inference.create(self.controller.model, self.frame.shape)
+        else:
+            from utils.classical_correction import restore_doe_image
+            self.inference = restore_doe_image
 
         input_video.set(cv2.CAP_PROP_POS_FRAMES, 0)
         while not self.isInterruptionRequested():
@@ -87,13 +95,15 @@ class VideoWriter(QThread):
         input_video.release()
 
         self.running = False
-        self.inference.clear()
+        if self.controller.model.stem != "Classic method":
+            self.inference.clear()
         self.finished.emit(str(self.record_path))
 
 class VideoReader(QObject):
     models_dir = Path(PurePath(__file__).parents[1], 'src', 'pretrained_models')
 
-    def __init__(self, ui, window, filename=None):
+    def __init__(self, ui, window, /, filename=None):
+        super().__init__()
         self.filename = None
         self.ui = ui
         self.window = window
@@ -136,4 +146,6 @@ class VideoReader(QObject):
     @Slot()
     def save_finished(self, output_path):
         self.progress.close()
+        if output_path == '-1':
+            QMessageBox.warning(self.window, 'Ошибка', f'Ошибка чтения видеофайла')
         QMessageBox.information(self.window, 'Обработка завершена', f'Сохранено в {output_path}')

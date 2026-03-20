@@ -19,6 +19,16 @@ class Predict(QThread):
         self.running = False
 
     def run(self):
+
+        if self.controller.model.stem == "Classic method":
+            from utils.classical_correction import restore_doe_image
+            self.running = True
+            while not self.isInterruptionRequested() and self.stream.status:
+                frame = np.copy(self.stream.frame)
+                result, latency = restore_doe_image(frame)
+                self.inference_complete.emit(result, frame, latency)
+            return
+
         self.inference = Inference()
         self.inference.create(self.controller.model, self.stream.frame.shape)
         self.running = True

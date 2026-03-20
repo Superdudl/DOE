@@ -8,13 +8,13 @@ from PySide6.QtWidgets import QFileDialog
 from PySide6.QtCore import Slot
 from PySide6.QtGui import QPixmap, QImage, Qt
 from pathlib import Path, PurePath
-from utils import Inference
+from utils import Inference, cuda_is_available
 from utils.metrics import psnr, ssim, match_template, match_histograms, deconv
 import cv2
 
-import pycuda.driver as cuda
-import pycuda.autoinit
-
+if cuda_is_available():
+    import pycuda.driver as cuda
+    import pycuda.autoinit
 
 class AnalyseController:
     models_dir = Path(PurePath(__file__).parents[1], 'src', 'pretrained_models')
@@ -101,15 +101,20 @@ class AnalyseController:
         # Восстановление изображения
         original_image = self.original_image.copy()
         blurred_image = self.blurred_image.copy()
+
+        if self.model.stem == "Classic method":
+            from utils.classical_correction import restore_doe_image
+            self.result_image, _ = restore_doe_image(blurred_image)
+
         if cuda.Device.count() == 0: return
-        inference = Inference()
-        inference.create(self.model, blurred_image.shape)
-        self.result_image, _ = inference(blurred_image)
-        original_image = match_template(self.result_image, original_image)
+        if self.model.stem != "Classic method":
+            inference = Inference()
+            inference.create(self.model, blurred_image.shape)
+            self.result_image, _ = inference(blurred_image)
+            original_image = match_template(self.result_image, original_image)
+            inference.clear()
 
-        inference.clear()
         # Расчет SSIM и PSNR
-
         original_gray = cv2.cvtColor(original_image, cv2.COLOR_RGB2GRAY)
         result_gray = cv2.cvtColor(self.result_image, cv2.COLOR_RGB2GRAY)
 
